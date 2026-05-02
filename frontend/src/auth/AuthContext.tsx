@@ -44,9 +44,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [accessToken, setAccessToken] = useState<string | null>(() =>
     localStorage.getItem('access'),
   )
+  const [isInitializing, setIsInitializing] = useState(true)
 
   const isAuthenticated = Boolean(accessToken && user)
 
+  // Sync token with API client
   useEffect(() => {
     if (accessToken) {
       api.defaults.headers.common.Authorization = `Bearer ${accessToken}`
@@ -55,48 +57,90 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }, [accessToken])
 
+  // Initial user fetch if we have a token but no user details
+  useEffect(() => {
+    const init = async () => {
+      if (accessToken && !user) {
+        try {
+          const res = await api.get('/api/me/')
+          const userData = res.data.success ? res.data.data : res.data
+          setUser(userData)
+          localStorage.setItem('user', JSON.stringify(userData))
+        } catch (err) {
+          console.error('[Auth] Failed to restore user session:', err)
+          localStorage.removeItem('access')
+          localStorage.removeItem('refresh')
+          localStorage.removeItem('user')
+          setAccessToken(null)
+          setUser(null)
+        }
+      }
+      setIsInitializing(false)
+    }
+    init()
+  }, [accessToken, user])
+
   const value = useMemo<AuthContextValue>(
     () => ({
       user,
       accessToken,
       isAuthenticated,
       login: async (email: string, password: string, endpoint: string = '/api/token/'): Promise<User> => {
-        console.log(`[Auth] Attempting login at: ${api.defaults.baseURL}${endpoint}`)
+        console.log(`[Auth] Attempting login at: ${endpoint}`)
         const res = await api.post<any>(endpoint, { email, password })
         
-        // Handle both standard DRF and my unified wrapper format
-        const responseData = res.data
-        const payload = responseData.success && responseData.data ? responseData.data : responseData
+        const payload = res.data.success && res.data.data ? res.data.data : res.data
 
         if (!payload || !payload.access) {
           throw new Error('Authentication failed: No access token received.')
         }
 
+        // 1. Store tokens
         localStorage.setItem('access', payload.access)
         localStorage.setItem('refresh', payload.refresh)
-        localStorage.setItem('user', JSON.stringify(payload.user))
-        
         setAccessToken(payload.access)
-        setUser(payload.user)
-        return payload.user
+        api.defaults.headers.common.Authorization = `Bearer ${payload.access}`
+
+        // 2. Fetch user profile (Robust flow)
+        try {
+          const profileRes = await api.get('/api/me/')
+          const userData = profileRes.data.success ? profileRes.data.data : profileRes.data
+          
+          localStorage.setItem('user', JSON.stringify(userData))
+          setUser(userData)
+          return userData
+        } catch (err) {
+          console.error('[Auth] Login successful but profile fetch failed:', err)
+          // Fallback if profile API is down but we have tokens
+          const fallbackUser = payload.user || { email, role: 'member' }
+          setUser(fallbackUser)
+          return fallbackUser
+        }
       },
       loginWithGoogle: async (token: string): Promise<User> => {
         const res = await api.post<any>('/api/auth/google/', { token })
-        
-        const responseData = res.data
-        const payload = responseData.success && responseData.data ? responseData.data : responseData
+        const payload = res.data.success && res.data.data ? res.data.data : res.data
 
         if (!payload || !payload.access) {
-          throw new Error('Authentication failed: No access token received.')
+          throw new Error('Google authentication failed.')
         }
 
         localStorage.setItem('access', payload.access)
         localStorage.setItem('refresh', payload.refresh)
-        localStorage.setItem('user', JSON.stringify(payload.user))
-        
         setAccessToken(payload.access)
-        setUser(payload.user)
-        return payload.user
+        api.defaults.headers.common.Authorization = `Bearer ${payload.access}`
+
+        try {
+          const profileRes = await api.get('/api/me/')
+          const userData = profileRes.data.success ? profileRes.data.data : profileRes.data
+          localStorage.setItem('user', JSON.stringify(userData))
+          setUser(userData)
+          return userData
+        } catch (err) {
+          const fallbackUser = payload.user || { email: 'google-user', role: 'member' }
+          setUser(fallbackUser)
+          return fallbackUser
+        }
       },
       logout: () => {
         localStorage.removeItem('access')
@@ -104,10 +148,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         localStorage.removeItem('user')
         setAccessToken(null)
         setUser(null)
+        delete api.defaults.headers.common.Authorization
       },
     }),
     [accessToken, user, isAuthenticated],
   )
+
+  if (isInitializing && accessToken && !user) {
+    return null // Or a loader
+  }
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
 }

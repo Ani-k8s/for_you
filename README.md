@@ -253,3 +253,20 @@ Removed TypeScript compilation from the build script in `package.json` to allow 
 ### 🔹 Learning
 
 Decoupling type checking from the build process ensures smoother CI/CD deployments while still allowing for local type safety.
+### 🔹 Issue: Runtime crash (undefined role)
+
+**Root Cause:**
+The frontend assumed the user object was included in the JWT response from `/api/token/`. However, standard SimpleJWT only returns access and refresh tokens, leading to an undefined `user` state and crashes when accessing `user.role`.
+
+**Fix:**
+Implemented a robust authentication flow in `AuthContext.tsx`:
+1.  **Token Storage**: Tokens are stored in `localStorage` immediately after login.
+2.  **Separate Profile Fetch**: The frontend now makes an explicit call to `/api/me/` using the new access token to fetch full user details.
+3.  **Optional Chaining**: Added null-safe access (`user?.role`) across all components to prevent runtime crashes during state transitions.
+4.  **Auto-Initialization**: Added a side-effect to restore user sessions automatically if a valid token exists but the user object is missing from memory.
+
+---
+
+### 🔹 Learning
+
+JWT authentication typically only provides authorization tokens. User profile details should be fetched from a dedicated "Who Am I" endpoint to ensure data consistency and reduce token payload size.
