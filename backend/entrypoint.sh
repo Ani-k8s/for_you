@@ -25,7 +25,7 @@ echo "[entrypoint] Running database migrations..."
 python manage.py migrate --noinput
 
 echo "[entrypoint] Seeding default admin user..."
-python manage.py seed_admin
+python manage.py seed_admin || echo "[entrypoint] Seed failed, skipping..."
 
 
 # ---------------------------------------------------------------------------

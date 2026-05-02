@@ -92,8 +92,12 @@ if env("DATABASE_URL", default=None):
     DATABASES = {
         'default': env.db()
     }
-    # Fix for Render/Postgres SSL
+    # Render/Postgres SSL Requirements
     DATABASES['default']['CONN_MAX_AGE'] = 600
+    if not DEBUG:
+        DATABASES['default']['OPTIONS'] = {
+            'sslmode': 'require',
+        }
 else:
     DATABASES = {
         'default': {
