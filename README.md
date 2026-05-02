@@ -327,18 +327,35 @@ Authentication state was not consistently persisted or checked at the landing pa
 
 ---
 
-## 🎨 UI/UX Enhancements
+## 🎨 UI/UX Polish Improvements
 
 ### Improvements:
 
-* **Modern SaaS Landing Page**: Completely redesigned the landing page with a "FitFlow" startup aesthetic, featuring blue-to-purple gradients and high-impact typography.
-* **Interactive Sections**: Added new sections for **Pricing**, **Testimonials**, and a **Dashboard Preview** to enhance the value proposition for prospective gym owners.
-* **Advanced Animations**: Leveraged **Framer Motion** for scroll-triggered fade-ins, floating card effects, and staggered transitions.
-* **Premium Branding**: Updated global styles with rounded-2xl containers, glassmorphism modals, and high-performance Tailwind utility classes.
-* **Mobile Excellence**: Re-engineered the mobile experience with a functional hamburger menu, optimized spacing, and responsive layout grids.
+* **Enhanced Existing Design**: Polished the core **777C8 ELITE** branding with refined spacing, alignment, and modern shadows without changing the identity.
+* **Layout Consistency**: Standardized padding, margins, and grid alignments across all sections to ensure a cohesive professional feel.
+* **Subtle UX Animations**: Integrated minimal **Framer Motion** effects (fade-ins, hover transitions, and button feedback) to improve user engagement without overdesigning.
+* **Mobile Responsiveness Fixes**: Resolved critical mobile issues including navbar accessibility, login button visibility, and spacing optimizations.
+* **Component Hardening**: Refined existing buttons with consistent `rounded-xl` corners and soft hover states while preserving the brand's signature Red/Orange color palette.
 
 ### Result:
 
-* **Professional Startup Feel**: The application now looks and feels like a top-tier SaaS product ready for production or stakeholder demo.
-* **High Conversion Design**: Clear CTAs, social proof (testimonials), and transparent pricing build trust and encourage user sign-ups.
-* **Demo-Ready Experience**: Every interaction is polished, ensuring a "WOW" factor for potential clients or interviewers.
+* **Premium Originality**: The application retains its established brand identity while feeling significantly more premium and professional.
+* **Optimized Mobile UX**: Fully functional and visually balanced experience across all device sizes.
+* **Demo-Ready Polish**: Every section is now aligned and polished for a production-grade demonstration.
+
+---
+
+### 🔹 Issue: 404 on frontend routes
+
+**Root Cause:**
+Vercel tries to resolve SPA routes (like `/dashboard/owner`) as physical files. Since these files don't exist, it returns a 404 instead of falling back to `index.html`.
+
+**Fix:**
+Added `vercel.json` to the frontend root with a rewrite rule that directs all incoming requests to `index.html`, allowing React Router to take over and handle the routing client-side.
+
+---
+
+### 🧪 Result
+
+* **Direct URL Access**: Navigating directly to `/dashboard` or `/login` no longer returns a 404.
+* **Persistent Routing**: The application correctly maintains its state even when the page is hard-refreshed.
