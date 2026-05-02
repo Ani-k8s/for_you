@@ -3,7 +3,10 @@ from .base import *
 DEBUG = False
 
 # Strict host configuration
-ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=[".yourdomain.com", "localhost", "127.0.0.1"])
+ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=["for-you-1-bqij.onrender.com", "localhost", "127.0.0.1", ".onrender.com"])
+
+# Allow all origins for the SaaS landing page and tenant dashboards to communicate with the API
+CORS_ALLOW_ALL_ORIGINS = True
 
 # Security Headers
 SECURE_BROWSER_XSS_FILTER = True

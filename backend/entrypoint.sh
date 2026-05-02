@@ -14,22 +14,9 @@
 set -e
 
 # ---------------------------------------------------------------------------
-# 1. Wait for database
+# 1. Database Check
 # ---------------------------------------------------------------------------
-echo "[entrypoint] Waiting for PostgreSQL at ${DB_HOST}:${DB_PORT}..."
-
-MAX_TRIES=30
-TRIES=0
-until pg_isready -h "${DB_HOST:-127.0.0.1}" -p "${DB_PORT:-5432}" -U "${DB_USER:-postgres}" -q; do
-  TRIES=$((TRIES + 1))
-  if [ "$TRIES" -ge "$MAX_TRIES" ]; then
-    echo "[entrypoint] ERROR: Database did not become ready after ${MAX_TRIES} seconds. Aborting."
-    exit 1
-  fi
-  echo "[entrypoint] Database not ready (attempt ${TRIES}/${MAX_TRIES}). Retrying in 1s..."
-  sleep 1
-done
-echo "[entrypoint] Database is ready."
+echo "[entrypoint] Preparing for production..."
 
 # ---------------------------------------------------------------------------
 # 2. Run migrations & seed data

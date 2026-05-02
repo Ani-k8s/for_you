@@ -86,10 +86,14 @@ TEMPLATES = [
 WSGI_APPLICATION = 'project.wsgi.application'
 
 # ---- Database ----
+# On Render, DATABASE_URL is provided by default. 
+# We use dj-database-url (via environ) to parse it.
 if env("DATABASE_URL", default=None):
     DATABASES = {
         'default': env.db()
     }
+    # Fix for Render/Postgres SSL
+    DATABASES['default']['CONN_MAX_AGE'] = 600
 else:
     DATABASES = {
         'default': {
