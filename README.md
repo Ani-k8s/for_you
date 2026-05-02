@@ -352,11 +352,24 @@ Authentication state was not consistently persisted or checked at the landing pa
 
 ---
 
+* **Production Stability**: The build is optimized and secure for Vercel deployment.
+
+---
+
+### 🔹 Issue: React is not defined
+
+**Root Cause:**
+In some build environments or specific Vite versions, the automatic JSX transform may fail if `import React from 'react'` is missing from components, leading to a `ReferenceError: React is not defined` at runtime.
+
+**Fix:**
+Added explicit `import React from 'react'` to all key components and ensured `@vitejs/plugin-react` is correctly configured in `vite.config.ts`. This ensures that the JSX transformer has the necessary reference to the React object regardless of the environment's default behavior.
+
+---
+
 ### 🧪 Result
 
-* **App Loads Correctly**: Direct URL access to dashboards is now fully functional.
-* **Branding Preserved**: The original Red/Orange identity is maintained across all pages.
-* **Production Stability**: The build is optimized and secure for Vercel deployment.
+* **Runtime Stability**: The application loads correctly without "React is not defined" errors.
+* **Consistent Rendering**: UI components are visible and functional across all routes.
 
 ---
 

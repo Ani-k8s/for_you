@@ -1,4 +1,4 @@
-import { type FormEvent, useState } from 'react'
+import React, { type FormEvent, useState } from 'react'
 import { toast } from 'sonner'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../auth/AuthContext'
