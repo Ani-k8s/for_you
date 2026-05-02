@@ -13,7 +13,7 @@ export default function Navbar({
   const navigate = useNavigate()
 
   return (
-    <header className="sticky top-0 z-[100] flex h-20 shrink-0 items-center justify-between border-b border-white/5 bg-[#020203]/40 backdrop-blur-3xl px-6 lg:px-10 transition-all duration-500">
+    <header className="sticky top-0 z-[100] flex h-20 shrink-0 items-center justify-between border-b border-white/5 bg-brand-carbon px-6 lg:px-10">
       
       {/* Left section: Identity & Hamburger */}
       <div className="flex items-center gap-6 w-1/3">

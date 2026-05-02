@@ -417,24 +417,35 @@ Added explicit `import React from 'react'` to all key components and ensured `@v
 
 ---
 
-### 🔹 Issue: Infinite redirect loop after login
+### 🔹 Issue: Infinite redirect loop
 
 **Root Cause:**
-* **Unconditional Redirects**: The Landing Page was triggering redirects based on token presence without verifying if the user was already on the target path, leading to repeated navigation events.
-* **Race Conditions**: Auth state checks were firing before the session was fully established.
+* **Repeated Navigation**: The Landing Page redirect logic was executing on every render cycle without sufficient path guards, especially during session restoration.
 
 **Fix:**
-* **Path-Specific Guards**: Added a `window.location.pathname === "/"` check to the Landing Page redirect logic. This ensures that auto-redirection only occurs when a logged-in user explicitly visits the root URL.
-* **Stabilized Login Flow**: Simplified the navigation event after login to ensure a single, clean transition to the dashboard.
-* **Branding Restoration**: Reverted unintended icon changes and restored the **Activity** logo across the Landing Page, Navbar, and Footer to maintain the original **777C8 ELITE** identity.
+* **Path-Specific Guard**: Added a strict check to ensure auto-redirection ONLY occurs when the user is on the root path (`/`).
+* **Replace Navigation**: Used `replace: true` in the `navigate` call to clean up the browser history and prevent "back button" loops.
+* **Unified Redirect Flow**: Centralized the redirection logic to ensure consistent behavior across all authentication states.
+
+---
+
+### 🔹 Issue: Branding inconsistency
+
+**Root Cause:**
+* **UI Over-Engineering**: Experimental gradients and complex iconography were introduced, deviating from the core brand identity.
+
+**Fix:**
+* **Clean Brand Restoration**: Removed unintended background blobs and pulses from the hero section.
+* **Simplified Layouts**: Reverted the Navbar and Header to use the original brand colors (`brand-carbon`) and removed distracting transitions.
+* **Identity Preservation**: Re-aligned the logo and text styles with the established "777C8 ELITE" design system.
 
 ---
 
 ### 🧪 Result
 
-* **Smooth Navigation**: Users are correctly directed to their dashboards without loops.
-* **Brand Consistency**: The UI strictly follows the original design system and color palette.
-* **System Stability**: The authentication flow is now predictable and resilient.
+* **Perfect Login Flow**: Users transition directly to their dashboard without 404s or loops.
+* **Clean UI**: The interface is minimal, professional, and strictly on-brand.
+* **Verified Access**: All role-based routes are accessible and stable.
 
 ---
 

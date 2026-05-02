@@ -39,12 +39,13 @@ export default function LandingPage() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  // Auto-redirect if already logged in (Only if on root path and profile ready)
+  // Auto-redirect if already logged in (Path-guarded to prevent loops)
   useEffect(() => {
     const token = localStorage.getItem("access");
+    
     if (token && window.location.pathname === "/" && isAuthenticated && user) {
       const target = getDashboardRoute(user.role);
-      console.log("[Auth] LandingPage redirecting to dashboard:", target);
+      console.log("[Auth] Redirecting to dashboard:", target);
       navigate(target, { replace: true });
     }
   }, [isAuthenticated, user, navigate]);
@@ -142,8 +143,6 @@ export default function LandingPage() {
 
       {/* Hero Section */}
       <section className="relative pt-48 pb-32 px-6 overflow-hidden flex flex-col items-center justify-center min-h-[90vh]">
-        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-brand-red/10 blur-[120px] rounded-full pointer-events-none animate-pulse" />
-        <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-brand-orange/10 blur-[120px] rounded-full pointer-events-none animate-pulse" style={{ animationDelay: '2s' }} />
         
         <div className="max-w-7xl w-full relative z-10 text-center flex flex-col items-center">
           <motion.div
