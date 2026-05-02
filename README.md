@@ -307,3 +307,20 @@ Authentication state was not fully persisted across page refreshes, and the rout
 ### 🔹 Learning
 
 Separating "Authentication" (token presence) from "Identity" (user details) in route guards prevents unnecessary redirects while the application initializes its global state.
+### 🔹 Issue: Login redirect loop
+
+**Root Cause:**
+Authentication state was not consistently persisted or checked at the landing page level, leading to situations where users would stay on the public-facing landing page even after successful authentication.
+
+**Fix:**
+* **Persistent Auth Persistence**: Stored the JWT access token and user identity in `localStorage` to ensure the session survives page reloads.
+* **Protected Routes Implementation**: Secured all dashboard endpoints with a `RequireAuth` guard that validates the presence of an active session before granting access.
+* **Auto-Redirection**: Implemented a global auth check on the landing page (`LandingPage.tsx`) that automatically redirects already-authenticated users to their respective role-based dashboards, eliminating the loop.
+
+---
+
+### 🧪 Final Result
+
+* **Login Persists**: Users remain logged in until an explicit logout.
+* **Seamless Navigation**: Automatic routing to dashboards on boot or landing page visits.
+* **Robust Security**: Protected routes are impenetrable without valid credentials.

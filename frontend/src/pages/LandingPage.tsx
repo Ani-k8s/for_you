@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { 
   Zap, 
   Shield, 
@@ -23,10 +23,27 @@ import Button from '../components/ui/Button'
 import Card from '../components/ui/Card'
 import LoginForm from '../components/auth/LoginForm'
 import Modal from '../components/ui/Modal'
+import { useAuth } from '../auth/AuthContext'
 
 export default function LandingPage() {
+  const navigate = useNavigate()
+  const { isAuthenticated, user } = useAuth()
   const [isLoginOpen, setIsLoginOpen] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+
+  // Auto-redirect if already logged in
+  useEffect(() => {
+    if (isAuthenticated && user) {
+      const getDashboardRoute = (u: any) => {
+        if (u.role === 'gym_owner') return '/dashboard/owner'
+        if (u.role === 'staff') return '/dashboard/trainer'
+        if (u.role === 'super_admin') return '/dashboard/super-admin'
+        if (u.role === 'member') return '/dashboard/member'
+        return '/'
+      }
+      navigate(getDashboardRoute(user), { replace: true })
+    }
+  }, [isAuthenticated, user, navigate])
 
   return (
     <div className="min-h-screen bg-[#020203] text-white selection:bg-brand-red/30 selection:text-white overflow-x-hidden font-sans">
