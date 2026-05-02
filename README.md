@@ -270,3 +270,21 @@ Implemented a robust authentication flow in `AuthContext.tsx`:
 ### 🔹 Learning
 
 JWT authentication typically only provides authorization tokens. User profile details should be fetched from a dedicated "Who Am I" endpoint to ensure data consistency and reduce token payload size.
+
+---
+
+## 🎨 UI/UX & Role-Based Enhancements
+
+### Improvements:
+
+* **Role-Based Dashboards**: Tailored views for **Super Admin**, **Gym Owner**, **Trainer**, and **Member** roles.
+* **Dynamic Navigation System**: Sidebar items and dashboard redirections are automatically filtered based on user permissions.
+* **Premium SaaS Aesthetic**: Integrated glassmorphism, brand gradients, and hardware-accelerated animations (`framer-motion`).
+* **Mobile-First Responsive Design**: Optimized hamburger menus, drawer sidebars, and fluid layouts for all device sizes.
+* **Enhanced Auth UX**: Added loading spinners, disabled submission states, and real-time error feedback in the login flow.
+
+### Result:
+
+* **Professional UI**: High-end interface suitable for top-tier SaaS platforms.
+* **Improved User Experience**: Reduced friction with intuitive navigation and clear role boundaries.
+* **Demo-Ready application**: Fully functional multi-role workflows ready for stakeholder presentation.

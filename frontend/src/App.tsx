@@ -9,6 +9,7 @@ import TrainerDashboard from './pages/TrainerDashboard'
 import SuperAdminDashboard from './pages/SuperAdminDashboard'
 import RemindersPage from './pages/RemindersPage'
 import MembersPage from './pages/MembersPage'
+import MemberDashboard from './pages/MemberDashboard'
 
 import AttendancePage from './pages/AttendancePage'
 import HelpPage from './pages/HelpPage'
@@ -118,6 +119,16 @@ export default function App() {
                 <RequireAuth>
                   <AppShell>
                     <TrainerDashboard />
+                  </AppShell>
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="/dashboard/member"
+              element={
+                <RequireAuth>
+                  <AppShell>
+                    <MemberDashboard />
                   </AppShell>
                 </RequireAuth>
               }

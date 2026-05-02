@@ -16,7 +16,8 @@ function getDashboardRoute(u: User): string {
   if (u.role === 'gym_owner') return '/dashboard/owner'
   if (u.role === 'staff') return '/dashboard/trainer'
   if (u.role === 'super_admin') return '/dashboard/super-admin'
-  return '/members'
+  if (u.role === 'member') return '/dashboard/member'
+  return '/'
 }
 
 export default function LoginForm() {

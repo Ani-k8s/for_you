@@ -97,14 +97,21 @@ export default function Sidebar({
   }
 
   const items = [
-    { to: role === 'super_admin' ? '/dashboard/super-admin' : role === 'gym_owner' ? '/dashboard/owner' : '/dashboard/trainer', label: 'Dashboard', icon: Home, roles: ['super_admin', 'gym_owner', 'staff'] },
+    { 
+      to: role === 'super_admin' ? '/dashboard/super-admin' : 
+          role === 'gym_owner' ? '/dashboard/owner' : 
+          role === 'staff' ? '/dashboard/trainer' : '/dashboard/member', 
+      label: 'Dashboard', 
+      icon: Home, 
+      roles: ['super_admin', 'gym_owner', 'staff', 'member'] 
+    },
     { to: '/gyms', label: 'Gyms', icon: Building2, roles: ['super_admin'] },
     { to: '/users', label: 'Team', icon: UserCog, roles: ['super_admin'] },
     { to: '/members', label: 'Members', icon: Users, roles: ['gym_owner', 'staff'] },
-    { to: '/attendance', label: 'Attendance', icon: CalendarCheck, roles: ['gym_owner', 'staff'] },
+    { to: '/attendance', label: 'Attendance', icon: CalendarCheck, roles: ['gym_owner', 'staff', 'member'] },
     { to: '/plans', label: 'Plans', icon: FileText, roles: ['gym_owner'] },
-    { to: '/announcements', label: 'Announcements', icon: Bell, roles: ['gym_owner', 'staff'] },
-    { to: '/billing', label: 'Billing', icon: CreditCard, roles: ['gym_owner'] },
+    { to: '/announcements', label: 'Announcements', icon: Bell, roles: ['gym_owner', 'staff', 'member'] },
+    { to: '/billing', label: 'Billing', icon: CreditCard, roles: ['gym_owner', 'member'] },
     { to: '/chat', label: 'Messages', icon: MessageCircle, roles: ['gym_owner', 'staff'] },
     { to: '/reports', label: 'Reports', icon: Activity, roles: ['gym_owner'] },
     { to: '/equipment', label: 'Equipment', icon: Wrench, roles: ['gym_owner', 'staff'] },
