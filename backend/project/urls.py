@@ -33,11 +33,13 @@ urlpatterns = [
     re_path(r"^api/health/?$", core_views.HealthCheckView.as_view(), name="api_health"),
     
     # Auth APIs
+    re_path(r"^api/token/?$", GlobalLoginView.as_view(), name="token_obtain_pair"),
+    re_path(r"^api/token/refresh/?$", TokenRefreshView.as_view(), name="token_refresh"),
     re_path(r"^api/auth/login/?$", GlobalLoginView.as_view(), name="global_login"),
     re_path(r"^api/tenant/login/?$", TenantLoginView.as_view(), name="tenant_login"),
-    re_path(r"^api/login/?$", GlobalLoginView.as_view(), name="token_obtain_pair"), # Legacy support
-    re_path(r"^api/refresh/?$", TokenRefreshView.as_view(), name="token_refresh"),
-    re_path(r"^api/auth/refresh/?$", TokenRefreshView.as_view(), name="token_refresh_alias"),
+    re_path(r"^api/login/?$", GlobalLoginView.as_view(), name="token_obtain_pair_alias"), # Legacy support
+    re_path(r"^api/refresh/?$", TokenRefreshView.as_view(), name="token_refresh_alias"),
+    re_path(r"^api/auth/refresh/?$", TokenRefreshView.as_view(), name="token_refresh_alias_2"),
     re_path(r"^api/auth/google/?$", GoogleAuthView.as_view(), name="google_auth"),
     re_path(r"^api/auth/google-login/?$", GoogleAuthView.as_view(), name="google_auth_alias"),
     re_path(r"^api/me/?$", MeView.as_view(), name="me"),

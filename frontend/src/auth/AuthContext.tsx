@@ -60,7 +60,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       user,
       accessToken,
       isAuthenticated,
-      login: async (email: string, password: string, endpoint: string = '/api/auth/login/'): Promise<User> => {
+      login: async (email: string, password: string, endpoint: string = '/api/token/'): Promise<User> => {
         const res = await api.post<any>(endpoint, { email, password })
         
         // Handle both standard DRF and my unified wrapper format

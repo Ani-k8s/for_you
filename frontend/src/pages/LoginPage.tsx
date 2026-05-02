@@ -55,7 +55,7 @@ export default function LoginPage() {
     setSubmitting(true)
     setError(null)
     
-    const loginEndpoint = gym.is_tenant ? '/api/tenant/login/' : '/api/auth/login/'
+    const loginEndpoint = '/api/token/'
 
     try {
       const loggedInUser = await login(email, password, loginEndpoint)
