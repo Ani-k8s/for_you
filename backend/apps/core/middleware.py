@@ -65,6 +65,11 @@ def _resolve_gym(subdomain: str):
     """
     Resolve a Gym from subdomain. Checks cache first, falls back to DB.
     Caches both hits (gym found) and misses (gym not found → None).
+    
+    FALLBACK STRATEGY:
+    If a specific subdomain is not found, we fallback to the first active gym.
+    This ensures that in production environments like Render (where the host itself 
+    might be flagged as a subdomain), the application remains accessible.
     """
     cached = _cache_get(subdomain)
     if cached is not ...:
@@ -73,7 +78,14 @@ def _resolve_gym(subdomain: str):
     # Cache miss — query DB
     try:
         from gyms.models import Gym
+        # 1. Try exact match
         gym = Gym.objects.filter(subdomain=subdomain, is_active=True).first()
+        
+        # 2. Fallback: If no match, try to get ANY active gym (default)
+        if not gym:
+            logger.info("Subdomain '%s' not found. Falling back to first active gym.", subdomain)
+            gym = Gym.objects.filter(is_active=True).first()
+            
     except Exception as exc:
         logger.error("Tenant DB lookup failed for subdomain=%s: %s", subdomain, exc)
         gym = None
