@@ -151,36 +151,23 @@ Admin@123
 
 ---
 
-### 🔹 Issues Faced & Fixes (Production)
+### 🔹 Issue: Login 404 Error
 
-#### ❌ Issue: Login API returning 404
 **Root Cause:**
-Frontend was calling `/api/login` while the backend uses SimpleJWT, which expects `/api/token/` for generating JWT pairs.
+Frontend was calling incorrect API endpoint (`/api/auth/login/`) while the actual Django authentication endpoint was configured as `/api/token/`.
 
 **Fix:**
-Updated the frontend API endpoint to `/api/token/` and verified the backend `urls.py` correctly maps this route to the `GlobalLoginView`.
+Aligned frontend API mapping with the actual Django authentication endpoint by updating `AuthContext` and login forms to use `/api/token/`.
+
+**Debugging Steps:**
+
+* Checked Render logs (confirmed backend healthy and receiving requests).
+* Verified endpoints manually by inspecting `backend/project/urls.py`.
+* Inspected browser Network tab to identify the exact 404 URL mismatch.
+* Corrected API mapping and hardcoded the production `API_BASE_URL`.
 
 **Learning:**
-Understanding the specific endpoint requirements of the backend authentication library (SimpleJWT) is critical when integrating a decoupled frontend.
-
----
-
-### 🔹 Authentication Flow
-
-1. **User Input**: User enters email and password into the login form.
-2. **Token Request**: Frontend sends a `POST` request to `https://for-you-1-bqij.onrender.com/api/token/`.
-3. **JWT Generation**: Backend validates credentials and returns `access` and `refresh` tokens.
-4. **Token Storage**: Frontend stores the `access` token in `localStorage` for session persistence.
-5. **Authorized Requests**: Future API calls automatically include the `Authorization: Bearer <access_token>` header via an Axios interceptor.
-
----
-
-### 🔹 Common Debugging Approach
-
-1. **Render Logs**: Monitored the backend logs to verify that the server was receiving requests and identify 404 status codes on auth routes.
-2. **Network Tab**: Used the browser's developer tools to inspect the exact URL being called by the frontend.
-3. **Endpoint Verification**: Confirmed the backend `urls.py` configuration against the requested frontend path.
-4. **Environment Check**: Verified that the production `API_BASE_URL` was correctly set to the live Render domain.
+Always verify backend routes and endpoint signatures before integrating frontend APIs to ensure production parity.
 
 ---
 
