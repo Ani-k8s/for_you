@@ -296,12 +296,12 @@ export default function MembersPage() {
             <span className="text-[10px] font-black uppercase tracking-widest text-slate-500">Filter by:</span>
          </div>
          <div className="flex flex-wrap items-center gap-4">
-            <Select value={statusFilter} onChange={(e:any) => setStatusFilter(e.target.value)} className="h-10 bg-black/40 border-white/10 text-[10px] font-black uppercase tracking-widest">
+            <Select value={statusFilter} onChange={(e: any) => setStatusFilter(e.target.value as 'all' | 'active' | 'expired')} className="h-10 bg-black/40 border-white/10 text-[10px] font-black uppercase tracking-widest">
               <option value="all">All Statuses</option>
               <option value="active">Active Members</option>
               <option value="expired">Expired Memberships</option>
             </Select>
-            <Select value={planFilter} onChange={(e:any) => setPlanFilter(e.target.value)} className="h-10 bg-black/40 border-white/10 text-[10px] font-black uppercase tracking-widest">
+            <Select value={planFilter} onChange={(e: any) => setPlanFilter(e.target.value)} className="h-10 bg-black/40 border-white/10 text-[10px] font-black uppercase tracking-widest">
               <option value="all">All Plans</option>
               {plans.map(p => <option key={p.id} value={p.id}>{p.name.toUpperCase()}</option>)}
             </Select>
@@ -457,7 +457,7 @@ export default function MembersPage() {
 
             <div className="space-y-3">
                <label className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-600 pl-1">Membership Plan</label>
-               <Select value={form.plan_id} onChange={(e:any) => setForm({...form, plan_id: e.target.value})} className="h-14 bg-white/[0.03] border-white/10 text-sm font-medium rounded-2xl">
+               <Select value={form.plan_id} onChange={(e: any) => setForm({...form, plan_id: e.target.value})} className="h-14 bg-white/[0.03] border-white/10 text-sm font-medium rounded-2xl">
                   {plans.map(p => <option key={p.id} value={p.id}>{p.name.toUpperCase()} — ${p.price}</option>)}
                </Select>
             </div>

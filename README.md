@@ -151,23 +151,38 @@ Admin@123
 
 ---
 
-### 🔹 Issue: Login 404 Error
+### 🔑 Key Issues Fixed in Production
 
-**Root Cause:**
-Frontend was calling incorrect API endpoint (`/api/auth/login/`) while the actual Django authentication endpoint was configured as `/api/token/`.
+#### 1. Authentication 404 (Login Error)
+- **Problem**: Frontend was calling `/api/login/` but backend expects `/api/token/` (SimpleJWT).
+- **Fix**: Updated `AuthContext.tsx` and `LoginForm.tsx` to use `/api/token/`.
+- **Result**: Login works seamlessly with Render backend.
 
-**Fix:**
-Aligned frontend API mapping with the actual Django authentication endpoint by updating `AuthContext` and login forms to use `/api/token/`.
+#### 2. API Connectivity
+- **Problem**: Localhost fallback logic causing network errors in production.
+- **Fix**: Hardcoded `https://for-you-1-bqij.onrender.com` in `client.ts` for production stability.
 
-**Debugging Steps:**
+#### 3. TypeScript Build Readiness
+- **Problem**: `tsc` build errors due to union type mismatches and missing imports.
+- **Fix**: 
+    - Standardized `Badge` and `Loader2` imports.
+    - Added explicit type casting in `MembersPage.tsx`.
+    - Added safety to `JSON.parse` in `SuperAdminDashboard.tsx`.
+- **Result**: `npm run build` passes locally and on Vercel.
 
-* Checked Render logs (confirmed backend healthy and receiving requests).
-* Verified endpoints manually by inspecting `backend/project/urls.py`.
-* Inspected browser Network tab to identify the exact 404 URL mismatch.
-* Corrected API mapping and hardcoded the production `API_BASE_URL`.
+### 🛠️ Frontend Build Troubleshooting
 
-**Learning:**
-Always verify backend routes and endpoint signatures before integrating frontend APIs to ensure production parity.
+If Vercel build fails:
+1. Ensure `node_modules` is cleared and re-installed.
+2. Run `npm run build` locally to catch TypeScript errors.
+3. Check `lucide-react` version; ensure `Loader2` is available (standard in v0.284+).
+4. Verify `vite.config.ts` has correct base path if not deploying to root.
+
+### 🚀 Verification Flow
+1. Visit `https://for-you-1-bqij.onrender.com/api/token/` (returns 405 Method Not Allowed - Correct).
+2. Visit Vercel Frontend.
+3. Login as Admin.
+4. Verify Dashboard data loads from Render.
 
 ---
 

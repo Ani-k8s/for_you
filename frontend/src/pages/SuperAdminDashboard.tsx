@@ -107,8 +107,8 @@ export default function SuperAdminDashboard() {
             setSupportConfigId(resp.data.id)
         }
         showToast('System configuration updated successfully.')
-    } catch (error) {
-        showToast('Failed to update system config.')
+    } catch (err) {
+      setToast({ message: getApiErrorMessage(err), type: 'bot' })
     } finally {
         setSavingConfig(false)
     }
@@ -162,10 +162,11 @@ export default function SuperAdminDashboard() {
     if (!editingRole) return
     setManualSaving(true)
     try {
+      const parsed = JSON.parse(manualContent)
       await api.put('/api/docs/manual/', {
         role: editingRole,
         title: manualTitle,
-        content: JSON.parse(manualContent)
+        content: parsed
       })
       showToast('Documentation updated successfully!')
       setShowManualEditor(false)

@@ -154,18 +154,11 @@ export default function RegistrationLinkPage() {
               </div>
             </div>
 
-            <Button variant="primary" size="lg" className="w-full h-14 font-black shadow-brand-500/20 shadow-lg text-lg" disabled={loading}>
-              {loading ? (
-                <span className="flex items-center gap-2">
-                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
-                  Processing...
-                </span>
-              ) : (
-                <span className="flex items-center gap-2">
-                  Send Request
-                  <Send className="h-5 w-5" />
-                </span>
-              )}
+            <Button variant="primary" size="lg" className="w-full h-14 font-black shadow-brand-500/20 shadow-lg text-lg" isLoading={loading}>
+              <span className="flex items-center gap-2">
+                Send Request
+                <Send className="h-5 w-5" />
+              </span>
             </Button>
             
             <p className="text-center text-[10px] text-slate-600 font-medium">
