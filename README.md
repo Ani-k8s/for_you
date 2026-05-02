@@ -417,6 +417,27 @@ Added explicit `import React from 'react'` to all key components and ensured `@v
 
 ---
 
+### 🔹 Issue: Infinite redirect loop after login
+
+**Root Cause:**
+* **Unconditional Redirects**: The Landing Page was triggering redirects based on token presence without verifying if the user was already on the target path, leading to repeated navigation events.
+* **Race Conditions**: Auth state checks were firing before the session was fully established.
+
+**Fix:**
+* **Path-Specific Guards**: Added a `window.location.pathname === "/"` check to the Landing Page redirect logic. This ensures that auto-redirection only occurs when a logged-in user explicitly visits the root URL.
+* **Stabilized Login Flow**: Simplified the navigation event after login to ensure a single, clean transition to the dashboard.
+* **Branding Restoration**: Reverted unintended icon changes and restored the **Activity** logo across the Landing Page, Navbar, and Footer to maintain the original **777C8 ELITE** identity.
+
+---
+
+### 🧪 Result
+
+* **Smooth Navigation**: Users are correctly directed to their dashboards without loops.
+* **Brand Consistency**: The UI strictly follows the original design system and color palette.
+* **System Stability**: The authentication flow is now predictable and resilient.
+
+---
+
 ### 🔹 Critical Recovery
 
 **Backend Stabilization:**

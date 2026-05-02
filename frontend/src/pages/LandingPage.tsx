@@ -39,16 +39,15 @@ export default function LandingPage() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  // Auto-redirect if already logged in (Only if user profile is ready)
+  // Auto-redirect if already logged in (Only if on root path and profile ready)
   useEffect(() => {
-    if (isAuthenticated && user) {
-      const target = getDashboardRoute(user.role)
-      if (target !== '/') {
-        console.log("[Auth] LandingPage auto-redirecting to:", target)
-        navigate(target, { replace: true })
-      }
+    const token = localStorage.getItem("access");
+    if (token && window.location.pathname === "/" && isAuthenticated && user) {
+      const target = getDashboardRoute(user.role);
+      console.log("[Auth] LandingPage redirecting to dashboard:", target);
+      navigate(target, { replace: true });
     }
-  }, [isAuthenticated, user, navigate])
+  }, [isAuthenticated, user, navigate]);
 
   return (
     <div className="min-h-screen bg-[#020203] text-white selection:bg-brand-red/30 selection:text-white overflow-x-hidden font-sans">
@@ -56,7 +55,7 @@ export default function LandingPage() {
       <nav className={`fixed top-0 inset-x-0 z-[100] border-b transition-all duration-500 ${scrolled ? 'bg-black/80 backdrop-blur-3xl border-white/10 py-3' : 'bg-transparent border-transparent py-5'}`}>
         <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
           <Link to="/" onClick={() => window.location.reload()} className="flex items-center gap-3 group">
-             <div className="h-10 w-10 bg-gradient-to-br from-brand-red to-brand-orange rounded-xl flex items-center justify-center shadow-xl shadow-brand-red/20 group-hover:rotate-12 transition-all duration-500 border border-white/10">
+             <div className="h-10 w-10 bg-gradient-to-br from-brand-red to-brand-orange rounded-xl flex items-center justify-center shadow-xl shadow-brand-red/20 transition-all duration-500 border border-white/10">
                 <Activity className="h-5 w-5 text-white" />
              </div>
              <span className="text-xl font-black tracking-tighter italic uppercase font-display">
@@ -320,7 +319,7 @@ export default function LandingPage() {
          <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-16 md:gap-8 items-start mb-20">
             <div className="md:col-span-1">
                <div className="flex items-center gap-3 mb-8">
-                  <Shield className="h-6 w-6 text-brand-red" />
+                  <Activity className="h-6 w-6 text-brand-red" />
                   <span className="text-xl font-black tracking-tighter italic uppercase font-display">777C8 <span className="text-brand-red">ELITE</span></span>
                </div>
                <p className="text-xs font-medium text-slate-500 leading-relaxed">The definitive operating system for high-performance fitness facilities.</p>

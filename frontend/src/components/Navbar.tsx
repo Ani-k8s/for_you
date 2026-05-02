@@ -1,4 +1,4 @@
-import { Menu, LogOut, Shield, User, LifeBuoy, Bell } from 'lucide-react'
+import { Menu, LogOut, Activity, User, LifeBuoy, Bell } from 'lucide-react'
 import { useAuth } from '../auth/AuthContext'
 import Button from './ui/Button'
 import { useNavigate } from 'react-router-dom'
@@ -33,7 +33,7 @@ export default function Navbar({
           }}
         >
             <div className="h-8 w-8 bg-gradient-to-br from-brand-red to-brand-orange rounded-lg flex items-center justify-center shadow-lg shadow-brand-red/20 group-hover:rotate-12 transition-transform duration-500 border border-white/10">
-               <Shield className="h-4 w-4 text-white" />
+                <Activity className="h-4 w-4 text-white" />
             </div>
             <div className="flex flex-col">
               <span className="text-[10px] font-black uppercase tracking-[0.25em] text-white leading-none">777C8</span>
