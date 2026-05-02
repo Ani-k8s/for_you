@@ -8,6 +8,7 @@ export default function RequireAuth({ children }: { children: React.ReactNode })
   
   // If no token at all, definitely not logged in
   if (!accessToken) {
+    console.log("[Auth] RequireAuth: No token found, redirecting to /login")
     return <Navigate to="/login" replace />
   }
 

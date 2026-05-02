@@ -23,7 +23,7 @@ import Button from '../components/ui/Button'
 import Card from '../components/ui/Card'
 import LoginForm from '../components/auth/LoginForm'
 import Modal from '../components/ui/Modal'
-import { useAuth } from '../auth/AuthContext'
+import { getDashboardRoute } from '../auth/authHelpers'
 
 export default function LandingPage() {
   const navigate = useNavigate()
@@ -38,17 +38,14 @@ export default function LandingPage() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  // Auto-redirect if already logged in
+  // Auto-redirect if already logged in (Only if user profile is ready)
   useEffect(() => {
     if (isAuthenticated && user) {
-      const getDashboardRoute = (u: any) => {
-        if (u.role === 'gym_owner') return '/dashboard/owner'
-        if (u.role === 'staff') return '/dashboard/trainer'
-        if (u.role === 'super_admin') return '/dashboard/super-admin'
-        if (u.role === 'member') return '/dashboard/member'
-        return '/'
+      const target = getDashboardRoute(user.role)
+      if (target !== '/') {
+        console.log("[Auth] LandingPage auto-redirecting to:", target)
+        navigate(target, { replace: true })
       }
-      navigate(getDashboardRoute(user), { replace: true })
     }
   }, [isAuthenticated, user, navigate])
 

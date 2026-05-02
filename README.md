@@ -373,6 +373,29 @@ Added explicit `import React from 'react'` to all key components and ensured `@v
 
 ---
 
+### 🔹 Issue: Login redirect loop + 404
+
+**Root Cause:**
+* **Multiple Redirection Events**: Both `LandingPage` and `RequireAuth` were triggering redirects simultaneously before the user profile was fully loaded.
+* **Non-Standardized Routing**: Role-based paths were inconsistently defined across components.
+* **Undefined State Handling**: Redirects were triggering on `null` user objects during session restoration.
+
+**Fix:**
+* **Centralized Auth Logic**: Created `authHelpers.ts` to provide a single source of truth for role-based dashboard paths.
+* **Robust Protected Routes**: Updated `RequireAuth` to show a loading state while the user profile is being fetched, preventing premature redirects to the login page.
+* **Safe Landing Page Redirects**: Guarded the landing page auto-redirect to only fire when both the authentication token AND the user profile are confirmed.
+* **Unified Route Definitions**: Ensured all role paths (including `/dashboard/super-admin`) are correctly registered in the main routing table.
+
+---
+
+### 🧪 Result
+
+* **Successful Login**: Users are now redirected to their correct role-specific dashboard immediately after signing in.
+* **Stable Sessions**: Page refreshes no longer trigger infinite redirect loops.
+* **Role Integrity**: All dashboard routes are correctly resolved without 404 errors.
+
+---
+
 ### 🔹 Critical Recovery
 
 **Backend Stabilization:**

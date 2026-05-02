@@ -11,14 +11,9 @@ import {
 import Button from '../ui/Button'
 import { FloatingInput } from '../ui/FloatingInput'
 
-// Route utility
-function getDashboardRoute(u: User): string {
-  if (u.role === 'gym_owner') return '/dashboard/owner'
-  if (u.role === 'staff') return '/dashboard/trainer'
-  if (u.role === 'super_admin') return '/dashboard/super-admin'
-  if (u.role === 'member') return '/dashboard/member'
-  return '/'
-}
+import { getDashboardRoute } from '../../auth/authHelpers'
+
+// Removed local getDashboardRoute to use the centralized one
 
 export default function LoginForm() {
   const navigate = useNavigate()
@@ -40,7 +35,9 @@ export default function LoginForm() {
     try {
       const loggedInUser = await login(email, password, loginEndpoint)
       toast.success('Sign in successful!')
-      navigate(getDashboardRoute(loggedInUser), { replace: true })
+      const target = getDashboardRoute(loggedInUser.role)
+      console.log("[Auth] Login success, navigating to:", target)
+      navigate(target, { replace: true })
     } catch (err: any) {
       const msg = getApiErrorMessage(err)
       setError(msg)
