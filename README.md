@@ -288,3 +288,22 @@ JWT authentication typically only provides authorization tokens. User profile de
 * **Professional UI**: High-end interface suitable for top-tier SaaS platforms.
 * **Improved User Experience**: Reduced friction with intuitive navigation and clear role boundaries.
 * **Demo-Ready application**: Fully functional multi-role workflows ready for stakeholder presentation.
+
+---
+
+### 🔹 Issue: Login redirect problem
+
+**Root Cause:**
+Authentication state was not fully persisted across page refreshes, and the route guards were redirecting to the landing page before the user profile could be restored from the backend.
+
+**Fix:**
+* **Token & Profile Persistence**: Stored both JWT access tokens and serialized user objects in `localStorage` for immediate restoration on boot.
+* **Synchronous Token Sync**: Ensured the API client headers are updated immediately after login to prevent subsequent profile fetches from failing.
+* **Robust Route Guards**: Updated `RequireAuth.tsx` to check for the presence of an access token first. If a token exists but the user profile is still loading, it now displays a session-restoration loader instead of prematurely redirecting to the login page.
+* **Unified Redirect Logic**: Standardized the `getDashboardRoute` utility across the login modal and the standalone login page to ensure consistent role-based redirection.
+
+---
+
+### 🔹 Learning
+
+Separating "Authentication" (token presence) from "Identity" (user details) in route guards prevents unnecessary redirects while the application initializes its global state.
