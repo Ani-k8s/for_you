@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import { 
   Zap, 
@@ -12,7 +12,12 @@ import {
   PlayCircle,
   Building,
   Target,
-  Trophy
+  Trophy,
+  Menu,
+  X,
+  AlertCircle,
+  ChevronRight,
+  ShieldCheck
 } from 'lucide-react'
 import Button from '../components/ui/Button'
 import Card from '../components/ui/Card'
@@ -21,6 +26,7 @@ import Modal from '../components/ui/Modal'
 
 export default function LandingPage() {
   const [isLoginOpen, setIsLoginOpen] = useState(false)
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
   return (
     <div className="min-h-screen bg-[#020203] text-white selection:bg-brand-red/30 selection:text-white overflow-x-hidden font-sans">
@@ -36,6 +42,7 @@ export default function LandingPage() {
              </span>
           </Link>
 
+          {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-10">
              <div className="flex items-center gap-8">
                <a href="#features" className="text-[10px] font-black uppercase tracking-[0.25em] text-slate-400 hover:text-white transition-all hover:translate-y-[-1px]">Features</a>
@@ -54,7 +61,62 @@ export default function LandingPage() {
                </Link>
              </div>
           </div>
+
+          {/* Mobile Menu Toggle */}
+          <button 
+            className="md:hidden h-12 w-12 flex items-center justify-center rounded-xl bg-white/5 border border-white/10 text-white"
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          >
+            {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+          </button>
         </div>
+
+        {/* Mobile Menu Overlay */}
+        <AnimatePresence>
+          {isMobileMenuOpen && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              className="md:hidden border-t border-white/5 bg-black/95 backdrop-blur-3xl overflow-hidden"
+            >
+              <div className="flex flex-col p-8 gap-8">
+                <a 
+                  href="#features" 
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="text-lg font-black uppercase tracking-widest text-slate-400 hover:text-white"
+                >
+                  Features
+                </a>
+                <a 
+                  href="#how-it-works" 
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="text-lg font-black uppercase tracking-widest text-slate-400 hover:text-white"
+                >
+                  How it Works
+                </a>
+                <div className="h-px w-full bg-white/5" />
+                <button 
+                  onClick={() => {
+                    setIsMobileMenuOpen(false)
+                    setIsLoginOpen(true)
+                  }}
+                  className="text-left text-lg font-black uppercase tracking-widest text-white hover:text-brand-red"
+                >
+                  Sign In
+                </button>
+                <Link 
+                  to="/register" 
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  <Button className="w-full h-16 btn-premium-gradient rounded-2xl font-black uppercase tracking-widest text-xs">
+                    Get Started
+                  </Button>
+                </Link>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </nav>
 
       {/* Hero Section */}

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { api, getApiErrorMessage } from '../api/client'
 import { FileText, Download, Loader2, BookOpen, ExternalLink, HelpCircle, Send, MessageCircle, User, Bot } from 'lucide-react'
 import Button from '../components/ui/Button'

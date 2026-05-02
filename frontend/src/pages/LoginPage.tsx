@@ -73,13 +73,13 @@ export default function LoginPage() {
   return (
     <AuthLayout>
       <AuthHeader 
-        subtitle="Please sign in to access your dashboard"
+        subtitle="Access your command center and manage your elite facility"
         logoUrl={gym.logo_url || undefined}
         isTenant={gym.is_tenant}
         gymName={gym.gym_name}
       />
 
-      <div className="relative w-full max-w-[480px] px-4 animate-float-up mb-20">
+      <div className="relative w-full max-w-[500px] px-6 animate-float-up mb-24">
         {/* Advanced Decorative Elements */}
         <div className="absolute -top-10 -right-10 w-32 h-32 bg-brand-red/10 blur-3xl rounded-full animate-pulse pointer-events-none" />
         <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-brand-orange/10 blur-3xl rounded-full animate-pulse pointer-events-none" />

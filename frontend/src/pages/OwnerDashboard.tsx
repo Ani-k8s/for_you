@@ -154,12 +154,12 @@ export default function OwnerDashboard() {
       {/* Header */}
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-10 pb-12 border-b border-white/5">
         <div className="flex items-center gap-8">
-           <div className="relative group shrink-0">
-              <div className="absolute -inset-6 bg-brand-red/20 blur-2xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
-              <div className="h-16 w-16 md:h-20 md:w-20 bg-gradient-to-br from-brand-red to-brand-orange rounded-3xl flex items-center justify-center shadow-2xl shadow-brand-red/30 border border-white/10 group-hover:rotate-6 transition-all duration-700 active-glow-brand">
-                <TrendingUp className="h-8 w-8 md:h-10 md:w-10 text-white" />
-              </div>
-           </div>
+            <div className="relative group shrink-0">
+               <div className="absolute -inset-6 bg-brand-red/30 blur-3xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
+               <div className="relative h-16 w-16 md:h-24 md:w-24 bg-gradient-to-br from-brand-red to-brand-orange rounded-[2rem] flex items-center justify-center shadow-2xl shadow-brand-red/30 border border-white/10 group-hover:rotate-12 transition-all duration-700 active-glow-brand">
+                 <TrendingUp className="h-8 w-8 md:h-12 md:w-12 text-white group-hover:scale-110 transition-transform" />
+               </div>
+            </div>
            <div>
               <h1 className="text-4xl md:text-6xl font-black text-white uppercase italic tracking-tighter leading-tight mb-3 text-gradient-elite font-display break-words">
                 Gym Dashboard
@@ -188,16 +188,16 @@ export default function OwnerDashboard() {
 
       {/* Metrics */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-        <Card isShimmer className="group p-8 bg-black/40 border-white/5 h-full">
-          <div className="absolute top-0 right-0 p-6 opacity-[0.03] group-hover:opacity-[0.08] transition-opacity duration-700 pointer-events-none">
-             <Users className="h-20 w-20" />
+        <Card isShimmer className="group p-8 bg-black/40 border-white/5 h-full hover:border-brand-red/30 transition-all duration-700">
+          <div className="absolute top-0 right-0 p-6 opacity-[0.03] group-hover:opacity-[0.1] group-hover:scale-110 transition-all duration-700 pointer-events-none">
+             <Users className="h-24 w-24" />
           </div>
           <div className="relative z-10 flex flex-col h-full">
-             <span className="text-[10px] font-black uppercase tracking-[0.4em] text-slate-600 block mb-6">Total Members</span>
-             <div className="text-5xl md:text-7xl font-black text-white uppercase italic tracking-tighter mb-4 leading-none font-display break-words">{data.total_members}</div>
-             <div className="mt-auto flex items-center gap-2 text-[10px] font-black text-emerald-500 uppercase tracking-widest italic break-words">
+             <span className="text-[10px] font-black uppercase tracking-[0.4em] text-slate-600 block mb-6 group-hover:text-brand-red transition-colors">Total Members</span>
+             <div className="text-5xl md:text-8xl font-black text-white uppercase italic tracking-tighter mb-4 leading-none font-display break-words group-hover:translate-x-1 transition-transform duration-700">{data.total_members}</div>
+             <div className="mt-auto flex items-center gap-2 text-[10px] font-black text-emerald-500 uppercase tracking-widest italic break-words group-hover:translate-y-[-2px] transition-transform">
                 <TrendingUp className="h-3.5 w-3.5" />
-                <span>+12.5% Month-over-Month</span>
+                <span>+12.5% Growth</span>
              </div>
           </div>
         </Card>

@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../auth/AuthContext'
 import type { User } from '../../auth/AuthContext'
 import { getApiErrorMessage } from '../../api/client'
-import { useGymBranding } from '../../branding/GymBrandingContext'
 import { 
   AlertCircle, 
   ChevronRight
@@ -23,7 +22,6 @@ function getDashboardRoute(u: User): string {
 export default function LoginForm() {
   const navigate = useNavigate()
   const { login } = useAuth()
-  const { data: gym } = useGymBranding()
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')

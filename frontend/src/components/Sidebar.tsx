@@ -3,7 +3,7 @@ import { Home, Users, CalendarCheck, Bell, Building2, UserCog, Shield, FileText,
 import { useAuth } from '../auth/AuthContext'
 import { useGymBranding } from '../branding/GymBrandingContext'
 import { useState } from 'react'
-import axios from 'axios'
+import { api } from '../api/client'
 import { clsx, type ClassValue } from 'clsx'
 import { twMerge } from 'tailwind-merge'
 
@@ -85,7 +85,7 @@ export default function Sidebar({
     e.preventDefault()
     setDownloading(true)
     try {
-      const response = await axios.get('/api/docs/manual/file/')
+      const response = await api.get('/api/docs/manual/file/')
       if (response.data.url) {
         window.open(response.data.url, '_blank')
       }

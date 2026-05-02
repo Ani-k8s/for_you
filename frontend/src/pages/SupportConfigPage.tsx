@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import axios from 'axios'
+import { api } from '../api/client'
 import { Plus, Edit2, Trash2, Search, MessageCircle, AlertCircle, CheckCircle2, XCircle, Loader2 } from 'lucide-react'
 import { twMerge } from 'tailwind-merge'
 import Card from '../components/ui/Card'
@@ -35,7 +35,7 @@ export default function SupportConfigPage() {
   const fetchFaqs = async () => {
     setLoading(true)
     try {
-      const response = await axios.get('/api/support-config/')
+      const response = await api.get('/api/support-config/')
       setFaqs(response.data)
       setError(null)
     } catch (err) {
@@ -56,13 +56,13 @@ export default function SupportConfigPage() {
 
     try {
       if (editingFaq.id) {
-        await axios.put(`/api/admin/support-config/${editingFaq.id}/`, editingFaq)
+        await api.put(`/api/admin/support-config/${editingFaq.id}/`, editingFaq)
       } else {
-        await axios.post('/api/admin/support-node/', {
+          await api.post('/api/admin/support-node/', {
           message: editingFaq.response,
           target: editingFaq.role || 'global'
         })
-        await axios.post('/api/support-config/', {
+        await api.post('/api/support-config/', {
           ...editingFaq,
           role: editingFaq.role || 'global',
           is_active: editingFaq.is_active !== undefined ? editingFaq.is_active : true
@@ -81,7 +81,7 @@ export default function SupportConfigPage() {
   const handleDelete = async (id: string) => {
     if (!confirm('Are you sure you want to delete this help topic?')) return
     try {
-      await axios.delete(`/api/support-config/${id}/`)
+      await api.delete(`/api/support-config/${id}/`)
       fetchFaqs()
     } catch (err) {
       alert('Deletion failed.')

@@ -186,6 +186,33 @@ If Vercel build fails:
 
 ---
 
+### 🔹 Issue: TypeScript Build Failure
+
+**Root Cause:**
+Unused variable (`gym`) caused TypeScript compilation failure in `LoginForm.tsx`.
+
+**Fix:**
+Removed unused variable to allow build to pass.
+
+---
+
+### 🔹 Issue: Login 404 Error
+
+**Root Cause:**
+Frontend called incorrect API endpoint.
+
+**Fix:**
+Updated endpoint to match backend (`/api/token/`).
+
+---
+
+### 🔹 Learning
+
+* TypeScript errors can block deployment.
+* Always verify API endpoints before integration.
+
+---
+
 # 🎯 Outcome
 
 - **Live SaaS App**: Fully functional and accessible on production domains.
@@ -193,3 +220,20 @@ If Vercel build fails:
 - **Secure Auth**: JWT-based authentication implemented and verified end-to-end.
 
 ---
+
+## 🎨 UI/UX Improvements
+
+### Improvements Made:
+
+* **Responsive Mobile-First Design**: Optimized all major pages for seamless viewing across mobile, tablet, and desktop devices.
+* **Fixed Mobile Login Visibility**: Implemented a responsive hamburger menu in the public landing page, ensuring the login and register options are always accessible on small screens.
+* **Modern Premium Navbar**: Added a sticky, high-performance navbar with backdrop-blur and smooth transitions for a professional look.
+* **Enhanced Login Experience**: Polished the login page with a centered card layout, refined typography, and subtle micro-interactions to create a premium "Welcome Back" feel.
+* **Dashboard Layout Polish**: Improved spacing, typography, and card designs across the Owner and Super Admin dashboards for better data visualization and usability.
+* **Micro-Interactions**: Integrated smooth framer-motion transitions and hover effects to buttons and metric cards to enhance the overall user engagement.
+
+### Result:
+
+* **Professional SaaS Aesthetic**: The application now matches the high standards of modern SaaS platforms.
+* **Fully Mobile-Friendly**: Users can manage their gym operations directly from their mobile browsers without layout breakage.
+* **Demo-Ready UI**: Polished and refined interface suitable for stakeholder presentations and live demos.

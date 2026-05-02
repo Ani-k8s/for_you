@@ -1,4 +1,5 @@
 import axios, { AxiosError } from 'axios'
+import { API_BASE_URL } from '../config'
 
 export type ApiErrorShape = {
   success?: boolean
@@ -8,7 +9,7 @@ export type ApiErrorShape = {
 }
 
 function resolveApiBaseUrl(): string {
-  return 'https://for-you-1-bqij.onrender.com'
+  return API_BASE_URL
 }
 
 export const api = axios.create({
