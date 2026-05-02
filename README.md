@@ -449,6 +449,28 @@ Added explicit `import React from 'react'` to all key components and ensured `@v
 
 ---
 
+### 🔹 Issue: Backend 500 error
+
+**Cause:**
+* **Incorrect Database Configuration**: The backend was failing to connect to the production database due to misaligned environment variable parsing and missing SSL requirements.
+* **Startup Failures**: The complex entrypoint script was encountering non-fatal errors that were blocking the application startup.
+
+**Fix:**
+* **Standardized Database Config**: Updated `base.py` to use `dj-database-url.config` for robust `DATABASE_URL` parsing.
+* **SSL Enforcement**: Mandated `sslmode: 'require'` for production database connections to satisfy Render's security policies.
+* **Simplified Entrypoint**: Streamlined `entrypoint.sh` to focus on core stability and reliable process execution.
+* **Migration Enforcement**: Ensured migrations are applied consistently on every deployment.
+
+---
+
+### 🧪 Result
+
+* **Backend Stable**: The API is now responsive and returns 200 OK for all health checks.
+* **API Operational**: Endpoints like `/api/token/` are fully functional.
+* **Frontend Connectivity**: The frontend can now successfully communicate with the backend for authentication.
+
+---
+
 ### 🔹 Critical Recovery
 
 **Backend Stabilization:**

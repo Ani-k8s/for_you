@@ -39,28 +39,14 @@ export default function LandingPage() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  // Auto-redirect if already logged in (Path-guarded to prevent loops)
-  useEffect(() => {
-    const token = localStorage.getItem("access");
-    
-    if (token && window.location.pathname === "/" && isAuthenticated && user) {
-      const target = getDashboardRoute(user.role);
-      console.log("[Auth] Redirecting to dashboard:", target);
-      navigate(target, { replace: true });
-    }
-  }, [isAuthenticated, user, navigate]);
-
   return (
     <div className="min-h-screen bg-[#020203] text-white selection:bg-brand-red/30 selection:text-white overflow-x-hidden font-sans">
       {/* Premium Navigation */}
       <nav className={`fixed top-0 inset-x-0 z-[100] border-b transition-all duration-500 ${scrolled ? 'bg-black/80 backdrop-blur-3xl border-white/10 py-3' : 'bg-transparent border-transparent py-5'}`}>
         <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
           <Link to="/" onClick={() => window.location.reload()} className="flex items-center gap-3 group">
-             <div className="h-10 w-10 bg-gradient-to-br from-brand-red to-brand-orange rounded-xl flex items-center justify-center shadow-xl shadow-brand-red/20 transition-all duration-500 border border-white/10">
-                <Activity className="h-5 w-5 text-white" />
-             </div>
              <span className="text-xl font-black tracking-tighter italic uppercase font-display">
-               777C8 <span className="text-brand-red group-hover:text-brand-orange transition-colors">ELITE</span>
+               ForYou <span className="text-brand-red">Gym SaaS</span>
              </span>
           </Link>
 
@@ -318,8 +304,7 @@ export default function LandingPage() {
          <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-16 md:gap-8 items-start mb-20">
             <div className="md:col-span-1">
                <div className="flex items-center gap-3 mb-8">
-                  <Activity className="h-6 w-6 text-brand-red" />
-                  <span className="text-xl font-black tracking-tighter italic uppercase font-display">777C8 <span className="text-brand-red">ELITE</span></span>
+                  <span className="text-xl font-black tracking-tighter italic uppercase font-display">ForYou <span className="text-brand-red">Gym SaaS</span></span>
                </div>
                <p className="text-xs font-medium text-slate-500 leading-relaxed">The definitive operating system for high-performance fitness facilities.</p>
             </div>
@@ -348,7 +333,7 @@ export default function LandingPage() {
             </div>
          </div>
          <div className="text-center pt-20 border-t border-white/5">
-            <p className="text-[9px] font-black text-slate-700 uppercase tracking-[0.4em] mb-4">&copy; 2026 777C8 Elite Platform. All Rights Reserved.</p>
+            <p className="text-[9px] font-black text-slate-700 uppercase tracking-[0.4em] mb-4">&copy; 2026 ForYou Gym SaaS Platform. All Rights Reserved.</p>
             <p className="text-[8px] font-bold text-slate-800 uppercase tracking-[0.1em]">Designed for Performance &bull; Engineered for Scale</p>
          </div>
       </footer>

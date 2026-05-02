@@ -7,6 +7,7 @@ from datetime import timedelta
 import environ
 import os
 import sys
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
@@ -86,14 +87,15 @@ TEMPLATES = [
 WSGI_APPLICATION = 'project.wsgi.application'
 
 # ---- Database ----
-# On Render, DATABASE_URL is provided by default. 
-# We use dj-database-url (via environ) to parse it.
-if env("DATABASE_URL", default=None):
+# Use DATABASE_URL from environment (Critical for Render/Production)
+if os.environ.get("DATABASE_URL"):
     DATABASES = {
-        'default': env.db()
+        'default': dj_database_url.config(
+            default=os.environ.get("DATABASE_URL"),
+            conn_max_age=600
+        )
     }
     # Render/Postgres SSL Requirements
-    DATABASES['default']['CONN_MAX_AGE'] = 600
     if not DEBUG:
         DATABASES['default']['OPTIONS'] = {
             'sslmode': 'require',

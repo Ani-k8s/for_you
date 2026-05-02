@@ -32,12 +32,9 @@ export default function Navbar({
             window.location.href = '/'
           }}
         >
-            <div className="h-8 w-8 bg-gradient-to-br from-brand-red to-brand-orange rounded-lg flex items-center justify-center shadow-lg shadow-brand-red/20 group-hover:rotate-12 transition-transform duration-500 border border-white/10">
-                <Activity className="h-4 w-4 text-white" />
-            </div>
             <div className="flex flex-col">
-              <span className="text-[10px] font-black uppercase tracking-[0.25em] text-white leading-none">777C8</span>
-              <span className="text-[8px] font-black uppercase tracking-[0.3em] text-brand-red leading-none mt-1">Console</span>
+              <span className="text-[10px] font-black uppercase tracking-[0.25em] text-white leading-none">ForYou</span>
+              <span className="text-[8px] font-black uppercase tracking-[0.3em] text-brand-red leading-none mt-1">Gym SaaS</span>
             </div>
         </div>
       </div>
