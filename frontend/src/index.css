@@ -1,0 +1,319 @@
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+@utility btn-mobile-full {
+  @apply w-full;
+  @media (width >= 640px) {
+    @apply w-auto;
+  }
+}
+
+@utility grid-responsive {
+  @apply grid grid-cols-1 gap-6;
+  @media (width >= 640px) {
+    @apply grid-cols-2;
+  }
+  @media (width >= 1024px) {
+    @apply grid-cols-3;
+  }
+}
+
+/* Base Body Responsiveness */
+
+html, body, #root {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+@theme {
+  /* 777c8 ELITE Brand Colors - Industrial Fire */
+  --color-brand-red: #ff1a1a;
+  --color-brand-yellow: #ffdf00;
+  --color-brand-orange: #ff6a00;
+  --color-brand-carbon: #050505;
+  --color-brand-charcoal: #0a0a0c;
+  
+  --color-slate-950: #020306;
+  --color-slate-900: #080a12;
+  
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-display: 'Outfit', 'Inter', system-ui, sans-serif;
+  
+  --spacing-main: 24px;
+  --spacing-sub: 16px;
+  
+  --glass-blur: 40px;
+  --glass-saturation: 180%;
+  
+  /* SaaS Spacing System (8px) */
+  --spacing-1: 4px;
+  --spacing-2: 8px;
+  --spacing-3: 12px;
+  --spacing-4: 16px;
+  --spacing-5: 20px;
+  --spacing-6: 24px;
+  --spacing-8: 32px;
+  --spacing-10: 40px;
+  --spacing-12: 48px;
+  --spacing-16: 64px;
+}
+
+/* Base Style Overrides */
+@layer base {
+  :root {
+    color-scheme: dark;
+    --brand-glow: rgba(255, 26, 26, 0.2);
+    --premium-shadow: 0 40px 100px rgba(0,0,0,0.9);
+    --glass-background: rgba(10, 10, 12, 0.4);
+    --glass-border: rgba(255, 255, 255, 0.05);
+  }
+
+  * {
+    min-width: 0;
+    min-height: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    background-color: #020203;
+    color: #f8fafc;
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+    min-height: 100vh;
+    padding: 0;
+    margin: 0;
+    line-height: 1.6;
+  }
+
+  /* GLOBAL TEXT SAFETY RULES */
+  h1, h2, h3, h4, h5, h6, p, span, div, button, input, select, textarea, label {
+    word-break: break-word !important;
+    overflow-wrap: anywhere !important;
+    white-space: normal !important; /* Eliminate whitespace-nowrap globally unless overridden */
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    line-height: 1.3 !important; /* Increased for safety */
+    letter-spacing: -0.02em;
+    padding-top: 0.1em;
+    padding-bottom: 0.1em;
+    overflow: visible !important;
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+
+  p {
+    line-height: 1.7;
+    letter-spacing: -0.01em;
+  }
+
+  ::selection {
+    background: rgba(255, 26, 26, 0.3);
+    color: white;
+  }
+}
+
+/* Premium Visual Utilities */
+@utility noise-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.02;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
+
+@utility premium-bg-environment {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background: 
+    radial-gradient(circle at 10% 20%, rgba(255, 26, 26, 0.12) 0%, transparent 40%),
+    radial-gradient(circle at 90% 80%, rgba(255, 130, 0, 0.12) 0%, transparent 40%),
+    radial-gradient(circle at 50% 50%, rgba(10, 10, 12, 1) 0%, #020203 100%);
+  /* Removed overflow: hidden */
+}
+
+@utility vignette-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.6) 100%);
+}
+
+@utility glass-panel {
+  background: var(--glass-background);
+  backdrop-filter: blur(40px) saturate(180%);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--premium-shadow);
+  height: auto !important; /* Prevent fixed heights */
+  overflow: visible !important; /* Ensure no clipping */
+}
+
+@utility silver-shimmer-border {
+  position: relative;
+  /* overflow: hidden is kept here as it's required for the shimmer effect mask, but we apply it carefully */
+  overflow: hidden; 
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -150%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      to right,
+      transparent 0%,
+      rgba(255, 255, 255, 0.08) 50%,
+      transparent 100%
+    );
+    transform: skewX(-25deg);
+    animation: shimmer 6s infinite linear;
+    pointer-events: none;
+    z-index: 5;
+  }
+}
+@utility glow-line-3d {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,26,26,0.5), #fff, rgba(255,106,0,0.5), transparent);
+  box-shadow: 0 0 15px rgba(255,26,26,0.3);
+  position: relative;
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 20%;
+    height: 2px;
+    background: #fff;
+    filter: blur(1px);
+    box-shadow: 0 0 10px #fff;
+  }
+}
+
+@utility btn-premium-gradient {
+  background: linear-gradient(135deg, #ff1a1a 0%, #ff6a00 100%);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  overflow: visible !important; /* Allow focus rings and content to breathe */
+  &::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 60%);
+    opacity: 0;
+    transition: opacity 0.4s;
+  }
+  &:hover {
+    box-shadow: 0 20px 40px -10px rgba(255, 26, 26, 0.5);
+    transform: translateY(-2px) scale(1.02);
+    &::after {
+      opacity: 1;
+    }
+  }
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
+@utility glowing-divider {
+  height: 1px;
+  width: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), rgba(255,255,255,0.02), transparent);
+  position: relative;
+  &::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #fff, transparent);
+    filter: blur(1px);
+    opacity: 0.2;
+  }
+}
+
+@utility text-gradient-elite {
+  background: linear-gradient(135deg, #ffdf00 0%, #ff6a00 50%, #ff1a1a 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 0 30px rgba(255, 26, 26, 0.2));
+}
+
+@utility text-gradient-silver {
+  background: linear-gradient(180deg, #fff 0%, rgba(255,255,255,0.6) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+@keyframes gradient-text {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@utility animate-gradient-text {
+  background-size: 200% auto;
+  animation: gradient-text 5s ease infinite;
+}
+
+@keyframes shimmer-slow {
+  0% { opacity: 0.3; transform: translateX(-100%); }
+  50% { opacity: 0.6; }
+  100% { opacity: 0.3; transform: translateX(100%); }
+}
+
+@utility animate-shimmer-slow {
+  position: relative;
+  overflow: hidden;
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+    animation: shimmer-slow 4s infinite;
+  }
+}
+
+@keyframes glow-pulse {
+  0%, 100% { filter: drop-shadow(0 0 5px rgba(255, 106, 0, 0.4)); }
+  50% { filter: drop-shadow(0 0 20px rgba(255, 26, 26, 0.6)); }
+}
+
+@utility animate-glow-pulse {
+  animation: glow-pulse 3s ease-in-out infinite;
+}
+
+@keyframes float-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@utility animate-float-up {
+  animation: float-up 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@utility bg-glow-blob {
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  filter: blur(120px);
+  opacity: 0.15;
+  pointer-events: none;
+  z-index: 0;
+}

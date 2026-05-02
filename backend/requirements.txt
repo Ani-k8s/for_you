@@ -1,0 +1,67 @@
+# =============================================================================
+# ForYou Gym SaaS – Python Dependencies
+# =============================================================================
+# Strategy:
+#   - All versions pinned exactly (==) for reproducible, stable builds
+#   - Compatible with Python 3.12+ (3.14 tested)
+#   - LTS / widely-supported releases preferred
+#   - DO NOT auto-upgrade; test every upgrade before deploying
+#   - Regenerate requirements-lock.txt after any change:
+#       pip freeze > requirements-lock.txt
+# =============================================================================
+
+# ── Core Framework ────────────────────────────────────────────────────────────
+Django==5.2                     # LTS – supported until April 2028
+
+# ── Django REST Framework ─────────────────────────────────────────────────────
+djangorestframework==3.15.2     # Stable; supports Django 4.x-5.x
+djangorestframework-simplejwt==5.3.1  # Pinned stable; 5.3.x works with DRF 3.15
+django-filter==24.3             # Stable; compatible with Django 5.2
+
+# ── Database ─────────────────────────────────────────────────────────────────
+psycopg2-binary==2.9.11         # Latest binary build; compatible with Python 3.14
+dj-database-url==2.1.0          # Parse DATABASE_URL for Render/Heroku deploy
+
+# ── Configuration & Environment ───────────────────────────────────────────────
+django-environ==0.11.2          # .env file loading – stable 0.11.x branch
+
+# ── Auth & Security ───────────────────────────────────────────────────────────
+google-auth==2.29.0             # Google OAuth token verification (used in users/views.py)
+
+# ── CORS & Static Files ───────────────────────────────────────────────────────
+django-cors-headers==4.3.1      # Stable; compatible with Django 5.x
+whitenoise==6.7.0               # Serve static files in production
+
+# ── HTTP Client ───────────────────────────────────────────────────────────────
+# IMPORTANT: Pinning versions to ensure zero RequestsDependencyWarning.
+requests==2.32.3
+charset-normalizer==3.4.1
+urllib3==2.2.3
+
+# ── Media & File Handling ─────────────────────────────────────────────────────
+Pillow==11.3.0                  # Latest; compatible with Python 3.14
+qrcode==8.2                     # QR code generation (used in gyms/models.py)
+
+# ── Reporting / Export ───────────────────────────────────────────────────────
+openpyxl==3.1.5                 # Excel export (used in core/reporting_views.py)
+reportlab==4.2.5                # PDF export (used in core/reporting_views.py)
+
+# ── WhatsApp Integration ─────────────────────────────────────────────────────
+# Required when WHATSAPP_PROVIDER=twilio (see .env.example).
+# Safe to include unconditionally — the Twilio client is only instantiated
+# if WHATSAPP_PROVIDER=twilio is set. The stub provider requires nothing.
+twilio==9.3.3
+
+# ── Production Server ────────────────────────────────────────────────────────
+gunicorn==22.0.0                # WSGI server for production (Procfile)
+
+# ── ASYNC UPGRADE PATH (Future — when scale requires it) ─────────────────────
+# Current design: synchronous + retry (no extra infrastructure needed).
+# When ready to go async, add these and wrap dispatcher calls with @shared_task:
+#
+# celery==5.4.0
+# redis==5.0.8
+# django-redis==5.4.0
+#
+# No business logic changes needed — the factory/dispatcher pattern supports
+# both synchronous and Celery task execution transparently.

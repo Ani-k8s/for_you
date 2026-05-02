@@ -1,0 +1,76 @@
+# =============================================================================
+# ForYou Gym SaaS — Production Docker Compose Override
+# =============================================================================
+# USAGE (production):
+#   docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+#
+# What this overrides from docker-compose.yml:
+#   - Removes development volume mounts (code baked into image)
+#   - Sets production environment variables
+#   - Adds resource limits
+#   - Configures structured JSON logging
+#   - Enables restart=always (not unless-stopped)
+# =============================================================================
+
+services:
+
+  db:
+    restart: always
+    # In production, do NOT expose DB port to host
+    ports: []
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 512M
+
+  redis:
+    restart: always
+    ports: []
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 128M
+
+  backend:
+    restart: always
+    # Production: no source code volume mount — code is baked into image
+    volumes:
+      - backend_media:/app/media
+    environment:
+      DEBUG: "False"
+      DB_HOST: db
+      DB_PORT: "5432"
+      REDIS_URL: redis://redis:6379/0
+      GUNICORN_WORKERS: ${GUNICORN_WORKERS:-4}
+      GUNICORN_TIMEOUT: ${GUNICORN_TIMEOUT:-120}
+    # Production logging (JSON format for log aggregators)
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 1G
+
+  frontend:
+    restart: always
+    # Production: no debug headers, stricter config
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "5m"
+        max-file: "2"
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 128M

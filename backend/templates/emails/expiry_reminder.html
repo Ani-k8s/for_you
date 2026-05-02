@@ -1,0 +1,43 @@
+{% extends "emails/base.html" %}
+
+{% block title %}Membership Expiry Reminder{% endblock %}
+{% block header_sub %}⚠️ Action Required{% endblock %}
+
+{% block content %}
+<p>Hi <strong>{{ member_name }}</strong>,</p>
+
+{% if urgency == "critical" %}
+<div style="background: #fef2f2; border: 1px solid #fecaca; border-radius: 8px; padding: 16px; margin-bottom: 20px;">
+  <p style="color: #dc2626; font-weight: 700; margin: 0;">
+    🚨 URGENT: Your membership expires <strong>tomorrow</strong>!
+  </p>
+</div>
+{% elif urgency == "warning" %}
+<div style="background: #fff7ed; border: 1px solid #fed7aa; border-radius: 8px; padding: 16px; margin-bottom: 20px;">
+  <p style="color: #ea580c; font-weight: 700; margin: 0;">
+    ⚠️ Your membership is expiring very soon!
+  </p>
+</div>
+{% endif %}
+
+<p>
+  Your membership at <strong>{{ gym_name }}</strong> will expire on
+  <strong style="color: {{ urgency_color|default:'#eab308' }};">{{ end_date }}</strong>
+  — that is <strong>{{ days_left }} day(s)</strong> from today.
+</p>
+
+<p>Renew now to keep your fitness journey uninterrupted. 💪</p>
+
+<div style="text-align: center; margin: 32px 0;">
+  <a href="{{ gym_url }}" class="cta-btn" style="background-color: {{ urgency_color|default:'#eab308' }};">
+    Renew Membership →
+  </a>
+</div>
+
+<div class="divider"></div>
+
+<p style="font-size: 13px; color: #94a3b8;">
+  To renew, log in to the gym portal and contact your gym administrator.
+  If you've already renewed, please disregard this reminder.
+</p>
+{% endblock %}

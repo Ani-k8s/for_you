@@ -1,0 +1,46 @@
+{% extends "emails/base.html" %}
+
+{% block title %}Your Gym is Ready!{% endblock %}
+{% block header_sub %}Gym Owner Credentials{% endblock %}
+
+{% block content %}
+<p>Hi <strong>{{ owner_name }}</strong>,</p>
+<p>
+  Congratulations! Your gym <strong>{{ gym_name }}</strong> is now live on ForYou Gym SaaS.
+  Your platform is ready to accept members.
+</p>
+
+<table class="info-table">
+  <tr>
+    <td>🌐 Gym URL</td>
+    <td><a href="{{ gym_url }}" style="color: {{ primary_color|default:'#22c55e' }};">{{ gym_url }}</a></td>
+  </tr>
+  <tr>
+    <td>📧 Owner Email</td>
+    <td>{{ email }}</td>
+  </tr>
+  <tr>
+    <td>🔑 Temporary Password</td>
+    <td style="color: #dc2626; font-family: monospace;">{{ password }}</td>
+  </tr>
+</table>
+
+<p><strong>Getting started — 4 easy steps:</strong></p>
+<ol style="padding-left: 20px; line-height: 2; color: #475569;">
+  <li>Log in to your gym portal</li>
+  <li>Configure gym features in <strong>Settings → Features</strong></li>
+  <li>Add your membership plans</li>
+  <li>Start adding staff and members</li>
+</ol>
+
+<div style="text-align: center; margin-top: 32px;">
+  <a href="{{ gym_url }}" class="cta-btn">Open Gym Portal →</a>
+</div>
+
+<div class="divider"></div>
+
+<p style="font-size: 13px; color: #94a3b8;">
+  <strong>Security reminder:</strong> Change your password after first login.
+  Contact ForYou Gym SaaS support if you need assistance setting up your gym.
+</p>
+{% endblock %}
