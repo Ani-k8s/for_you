@@ -31,11 +31,7 @@ export function LoginModal({ open, onClose }: LoginModalProps) {
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
-  useEffect(() => {
-    if (isAuthenticated && user) {
-      navigate(getDashboardRoute(user), { replace: true })
-    }
-  }, [isAuthenticated, user, navigate])
+  // Removed auto-redirect useEffect to prevent loops
 
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault()
@@ -47,7 +43,9 @@ export function LoginModal({ open, onClose }: LoginModalProps) {
 
     try {
       const loggedInUser = await login(email, password, loginEndpoint)
-      navigate(getDashboardRoute(loggedInUser), { replace: true })
+      localStorage.setItem("access", loggedInUser.tokens?.access || "")
+      console.log("Token saved:", localStorage.getItem("access"));
+      window.location.href = "/dashboard/super-admin"
     } catch (err: any) {
       setError(getApiErrorMessage(err))
     } finally {

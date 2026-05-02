@@ -36,11 +36,7 @@ export default function LoginPage() {
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
-  useEffect(() => {
-    if (isAuthenticated && user) {
-      navigate(getDashboardRoute(user), { replace: true })
-    }
-  }, [isAuthenticated, user, navigate])
+  // Removed auto-redirect useEffect to prevent loops
 
   useEffect(() => {
     if (error) {
@@ -60,7 +56,9 @@ export default function LoginPage() {
     try {
       const loggedInUser = await login(email, password, loginEndpoint)
       toast.success('Login successful!')
-      navigate(getDashboardRoute(loggedInUser), { replace: true })
+      localStorage.setItem("access", loggedInUser.tokens?.access || "")
+      console.log("Token saved:", localStorage.getItem("access"));
+      window.location.href = "/dashboard/super-admin"
     } catch (err: any) {
       const msg = getApiErrorMessage(err)
       setError(msg)
