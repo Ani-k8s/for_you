@@ -359,3 +359,20 @@ Added `vercel.json` to the frontend root with a rewrite rule that directs all in
 
 * **Direct URL Access**: Navigating directly to `/dashboard` or `/login` no longer returns a 404.
 * **Persistent Routing**: The application correctly maintains its state even when the page is hard-refreshed.
+
+---
+
+### 🔹 Issue: Blank screen after routing fix
+
+**Root Cause:**
+Using the `routes` property in `vercel.json` can sometimes conflict with Vite's build output or lead to partial path mismatches, resulting in a blank screen as the browser fails to load the correct assets.
+
+**Fix:**
+Migrated from `routes` to `rewrites` in `vercel.json`. This is the recommended configuration for modern Vite-based Single Page Applications on Vercel, as it transparently handles the fallback to `index.html` without breaking asset resolution.
+
+---
+
+### 🧪 Result
+
+* **App Loads Correctly**: The application now renders successfully without a blank screen.
+* **Stable SPA Routing**: Client-side routes are fully functional and accessible via direct URLs.
