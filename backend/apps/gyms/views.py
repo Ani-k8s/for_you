@@ -293,8 +293,8 @@ class GymRequestViewSet(viewsets.ModelViewSet):
             )
 
             # Create owner user
-            if User.objects.filter(email__iexact=instance.owner_email).exists():
-                owner = User.objects.get(email__iexact=instance.owner_email)
+            owner = User.objects.filter(email__iexact=instance.owner_email).first()
+            if owner:
                 owner.role = User.Roles.GYM_OWNER
                 owner.gym = gym
                 owner.is_active = True

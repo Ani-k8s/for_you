@@ -99,10 +99,7 @@ export default function RegisterGymPage() {
         {/* Brand Header */}
         <div className="flex flex-col items-center mb-12">
           <div className="flex items-center gap-3 mb-6">
-            <div className="h-12 w-12 bg-brand-red rounded-xl flex items-center justify-center shadow-2xl shadow-brand-red/40">
-              <ShieldCheck className="h-6 w-6 text-white" />
-            </div>
-            <span className="text-2xl font-black text-white tracking-tighter italic uppercase">777C8 <span className="text-brand-red">ELITE</span></span>
+            <span className="text-2xl font-black text-white tracking-tighter italic uppercase">ForYou <span className="text-brand-red">Gym SaaS</span></span>
           </div>
           <h1 className="text-5xl font-black text-white uppercase italic tracking-tighter text-center">Start Your Gym</h1>
           <p className="text-slate-500 text-xs font-black uppercase tracking-[0.4em] mt-4">Authorized Access Only</p>

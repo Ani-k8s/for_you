@@ -27,6 +27,7 @@ router.register(r'announcements', AnnouncementViewSet, basename='announcements')
 router.register(r'gyms', GymViewSet, basename='gyms')
 
 urlpatterns = [
+    path("", core_views.health, name="root_health"),
     path("api/", include(router.urls)),
     path("admin/", admin.site.urls),
     path("health/", core_views.HealthCheckView.as_view(), name="health"),

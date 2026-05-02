@@ -98,15 +98,12 @@ class LoginView(TokenObtainPairView):
             return Response({"detail": "Email is required."}, status=400)
 
         tenant = getattr(request, "tenant", None)
-        try:
-            if tenant:
-                # Scoped login for tenants
-                user = User.objects.get(email__iexact=email, gym=tenant)
-            else:
-                # Global login for Super Admins
-                user = User.objects.get(email__iexact=email)
-        except User.DoesNotExist:
-            user = None
+        if tenant:
+            # Scoped login for tenants
+            user = User.objects.filter(email__iexact=email, gym=tenant).first()
+        else:
+            # Global login for Super Admins
+            user = User.objects.filter(email__iexact=email).first()
 
         if user:
             error = _check_gym_login_allowed(request, user, "email")
@@ -147,7 +144,7 @@ class TenantLoginView(TokenObtainPairView):
         response = super().post(request, *args, **kwargs)
 
         if response.status_code == 200:
-            user = User.objects.get(email__iexact=email)
+            user = User.objects.filter(email__iexact=email).first()
             # Final safety check via helper
             error = _check_gym_login_allowed(request, user, "email")
             if error:
@@ -179,9 +176,8 @@ class GoogleAuthView(APIView):
         if email is None:
             return Response({"detail": "Invalid or expired Google token."}, status=400)
 
-        try:
-            user = User.objects.get(email__iexact=email)
-        except User.DoesNotExist:
+        user = User.objects.filter(email__iexact=email).first()
+        if not user:
             return Response(
                 {"detail": "No account found for this Google email. Please contact your gym administrator."},
                 status=403,

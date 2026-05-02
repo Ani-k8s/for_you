@@ -1,4 +1,5 @@
 from django.db.models import Q
+from django.http import JsonResponse
 from django.contrib.auth import get_user_model
 from django.views.generic import TemplateView
 from rest_framework.permissions import AllowAny, IsAuthenticated
@@ -16,6 +17,13 @@ import os
 # ---------------------------------------------------------------------------
 # System Status (Health Check)
 # ---------------------------------------------------------------------------
+
+def health(request):
+    """
+    GET /
+    Ensure root never crashes.
+    """
+    return JsonResponse({"status": "ok", "message": "ForYou Gym SaaS Backend Root OK"})
 
 class HealthCheckView(APIView):
     """
@@ -56,15 +64,15 @@ class ManualView(APIView):
         role = role_map.get(role, role)
 
         from core.models import UserManual
-        try:
-            manual = UserManual.objects.get(role=role)
+        manual = UserManual.objects.filter(role=role).first()
+        if manual:
             return Response({
                 "role": role.upper(),
                 "title": manual.title,
                 "sections": manual.content,
                 "updated_at": manual.updated_at,
             })
-        except UserManual.DoesNotExist:
+        else:
             return Response({"error": "No manual configured for this role."}, status=404)
 
     def put(self, request):
@@ -278,8 +286,8 @@ class UserManualFileView(APIView):
         role = role_map.get(role, role)
 
         from core.models import UserManual
-        try:
-            manual = UserManual.objects.get(role=role)
+        manual = UserManual.objects.filter(role=role).first()
+        if manual:
             if not manual.file:
                 try:
                     from core.utils.manual_utils import generate_manual_pdf
@@ -292,7 +300,7 @@ class UserManualFileView(APIView):
                 "title": manual.title,
                 "updated_at": manual.updated_at,
             })
-        except UserManual.DoesNotExist:
+        else:
             return Response({"error": "Manual not found"}, status=404)
 
 

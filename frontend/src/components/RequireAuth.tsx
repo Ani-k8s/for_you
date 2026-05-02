@@ -8,26 +8,21 @@ export default function RequireAuth({ children }: { children: React.ReactNode })
   
   // If no token at all, definitely not logged in
   if (!accessToken) {
-    console.log("[Auth] RequireAuth: No token found, redirecting to /login")
-    return <Navigate to="/login" replace />
+    return <Navigate to="/" replace />
   }
 
   // If we have a token but user profile isn't loaded yet, show a loader 
-  // instead of redirecting (avoids the "flicker" and redirect loop)
   if (!user) {
     return (
       <div className="h-screen w-full bg-[#010102] flex items-center justify-center">
-        <div className="flex flex-col items-center gap-4">
-          <Loader2 className="h-10 w-10 text-brand-red animate-spin" />
-          <p className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500">Restoring Session...</p>
-        </div>
+        <Loader2 className="h-8 w-8 text-brand-red animate-spin" />
       </div>
     )
   }
 
   // Final check
   if (!isAuthenticated) {
-    return <Navigate to="/login" replace />
+    return <Navigate to="/" replace />
   }
 
   return <>{children}</>
