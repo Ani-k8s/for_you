@@ -23,6 +23,7 @@ import Button from '../components/ui/Button'
 import Card from '../components/ui/Card'
 import LoginForm from '../components/auth/LoginForm'
 import Modal from '../components/ui/Modal'
+import { useAuth } from '../auth/AuthContext'
 import { getDashboardRoute } from '../auth/authHelpers'
 
 export default function LandingPage() {
@@ -56,7 +57,7 @@ export default function LandingPage() {
         <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
           <Link to="/" onClick={() => window.location.reload()} className="flex items-center gap-3 group">
              <div className="h-10 w-10 bg-gradient-to-br from-brand-red to-brand-orange rounded-xl flex items-center justify-center shadow-xl shadow-brand-red/20 group-hover:rotate-12 transition-all duration-500 border border-white/10">
-                <Shield className="h-5 w-5 text-white" />
+                <Activity className="h-5 w-5 text-white" />
              </div>
              <span className="text-xl font-black tracking-tighter italic uppercase font-display">
                777C8 <span className="text-brand-red group-hover:text-brand-orange transition-colors">ELITE</span>

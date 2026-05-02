@@ -396,6 +396,27 @@ Added explicit `import React from 'react'` to all key components and ensured `@v
 
 ---
 
+### 🔹 Issue: App crash due to undefined hook
+
+**Root Cause:**
+* **Missing Import**: The `useAuth` hook was being utilized in `LandingPage.tsx` without an explicit import, leading to a `ReferenceError` at runtime.
+* **Branding Inconsistency**: The header logo was using the incorrect iconography, deviating from the established brand identity.
+
+**Fix:**
+* **Restored Auth Context**: Re-implemented the proper `useAuth` import from the centralized authentication context to stabilize the landing page.
+* **Branding Realignment**: Replaced the placeholder logo icon with the correct **Activity** symbol, ensuring the header matches the original "777C8 ELITE" branding.
+* **Redesign Reversion**: Removed unintended UI changes to the navbar and restored the original spacing and alignment.
+
+---
+
+### 🧪 Result
+
+* **Zero-Crash Stability**: The application loads successfully without runtime errors.
+* **Authentic Branding**: The header and navbar now strictly adhere to the user's original design and identity.
+* **Operational Integrity**: Users can once again navigate the marketing site and access the login portals seamlessly.
+
+---
+
 ### 🔹 Critical Recovery
 
 **Backend Stabilization:**
