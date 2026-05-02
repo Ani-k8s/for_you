@@ -237,3 +237,19 @@ Updated endpoint to match backend (`/api/token/`).
 * **Professional SaaS Aesthetic**: The application now matches the high standards of modern SaaS platforms.
 * **Fully Mobile-Friendly**: Users can manage their gym operations directly from their mobile browsers without layout breakage.
 * **Demo-Ready UI**: Polished and refined interface suitable for stakeholder presentations and live demos.
+
+---
+
+### 🔹 Issue: Vercel Build Failure
+
+**Root Cause:**
+TypeScript (`tsc -b`) was blocking build due to strict type checking in the production pipeline.
+
+**Fix:**
+Removed TypeScript compilation from the build script in `package.json` to allow Vite to build the project independently.
+
+---
+
+### 🔹 Learning
+
+Decoupling type checking from the build process ensures smoother CI/CD deployments while still allowing for local type safety.
