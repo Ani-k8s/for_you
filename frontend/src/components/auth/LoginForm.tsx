@@ -35,10 +35,10 @@ export default function LoginForm() {
     try {
       const loggedInUser = await login(email, password, loginEndpoint)
       toast.success('Sign in successful!')
-      localStorage.setItem("access", loggedInUser.tokens?.access || "")
-      console.log("Token saved:", localStorage.getItem("access"));
-      console.log("[Auth] Performing hard redirect to /dashboard/super-admin")
-      window.location.href = "/dashboard/super-admin"
+      
+      const dashboardRoute = getDashboardRoute(loggedInUser.role)
+      console.log(`[Auth] Redirecting ${loggedInUser.role} to: ${dashboardRoute}`)
+      window.location.href = dashboardRoute
     } catch (err: any) {
       const msg = getApiErrorMessage(err)
       setError(msg)

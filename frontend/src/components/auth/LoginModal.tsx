@@ -4,6 +4,7 @@ import { useAuth } from '../../auth/AuthContext'
 import type { User } from '../../auth/AuthContext'
 import { getApiErrorMessage } from '../../api/client'
 import { useGymBranding } from '../../branding/GymBrandingContext'
+import { getDashboardRoute } from '../../auth/authHelpers'
 import { AlertCircle, ChevronRight } from 'lucide-react'
 import Button from '../ui/Button'
 import { FloatingInput } from '../ui/FloatingInput'
@@ -14,12 +15,7 @@ interface LoginModalProps {
   onClose: () => void;
 }
 
-function getDashboardRoute(u: User): string {
-  if (u.role === 'gym_owner') return '/dashboard/owner'
-  if (u.role === 'staff') return '/dashboard/trainer'
-  if (u.role === 'super_admin') return '/dashboard/super-admin'
-  return '/members'
-}
+// Removed local getDashboardRoute to use centralized helper
 
 export function LoginModal({ open, onClose }: LoginModalProps) {
   const navigate = useNavigate()
@@ -43,9 +39,9 @@ export function LoginModal({ open, onClose }: LoginModalProps) {
 
     try {
       const loggedInUser = await login(email, password, loginEndpoint)
-      localStorage.setItem("access", loggedInUser.tokens?.access || "")
-      console.log("Token saved:", localStorage.getItem("access"));
-      window.location.href = "/dashboard/super-admin"
+      const dashboardRoute = getDashboardRoute(loggedInUser.role)
+      console.log(`[Auth] Redirecting ${loggedInUser.role} to: ${dashboardRoute}`)
+      window.location.href = dashboardRoute
     } catch (err: any) {
       setError(getApiErrorMessage(err))
     } finally {

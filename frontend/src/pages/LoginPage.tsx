@@ -12,19 +12,14 @@ import {
   ShieldCheck,
   Zap
 } from 'lucide-react'
+import { getDashboardRoute } from '../auth/authHelpers'
 import Button from '../components/ui/Button'
 import { AuthLayout } from '../components/auth/AuthLayout'
 import { AuthHeader } from '../components/auth/AuthHeader'
 import { FloatingInput } from '../components/ui/FloatingInput'
 import Card from '../components/ui/Card'
 
-// Route utility
-function getDashboardRoute(u: User): string {
-  if (u.role === 'gym_owner') return '/dashboard/owner'
-  if (u.role === 'staff') return '/dashboard/trainer'
-  if (u.role === 'super_admin') return '/dashboard/super-admin'
-  return '/members'
-}
+// Removed local getDashboardRoute to use the centralized one from authHelpers
 
 export default function LoginPage() {
   const navigate = useNavigate()
@@ -56,9 +51,10 @@ export default function LoginPage() {
     try {
       const loggedInUser = await login(email, password, loginEndpoint)
       toast.success('Login successful!')
-      localStorage.setItem("access", loggedInUser.tokens?.access || "")
-      console.log("Token saved:", localStorage.getItem("access"));
-      window.location.href = "/dashboard/super-admin"
+      
+      const dashboardRoute = getDashboardRoute(loggedInUser.role)
+      console.log(`[Auth] Redirecting ${loggedInUser.role} to: ${dashboardRoute}`)
+      window.location.href = dashboardRoute
     } catch (err: any) {
       const msg = getApiErrorMessage(err)
       setError(msg)
