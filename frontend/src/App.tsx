@@ -27,16 +27,24 @@ import AnnouncementsPage from './pages/AnnouncementsPage'
 import ChatPage from './pages/ChatPage'
 
 import { useGymBranding } from './branding/GymBrandingContext'
+import { useAuth } from './auth/AuthContext'
 import { Loader2 } from 'lucide-react'
 import { Toaster } from 'sonner'
 
 export default function App() {
-  const { isMainDomain, isLoading } = useGymBranding()
+  const { isMainDomain, isLoading: isBrandingLoading, subdomain } = useGymBranding()
+  const { isLoading: isAuthLoading } = useAuth()
+
+  const isLoading = isBrandingLoading || isAuthLoading
 
   if (isLoading) {
+    console.log(`[App] Still loading. Branding: ${isBrandingLoading}, Auth: ${isAuthLoading}`);
     return (
-      <div className="h-screen w-full bg-brand-carbon flex items-center justify-center">
+      <div className="h-screen w-full bg-[#010102] flex flex-col items-center justify-center gap-4">
         <Loader2 className="h-10 w-10 text-brand-red animate-spin" />
+        <div className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500 animate-pulse">
+          Initializing {subdomain ? `Tenant [${subdomain}]` : 'Marketing System'}...
+        </div>
       </div>
     )
   }

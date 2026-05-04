@@ -61,12 +61,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   // Initial user fetch if we have a token but no user details
   useEffect(() => {
     const init = async () => {
+      console.log(`[Auth] Initializing. Token: ${accessToken ? 'PRESENT' : 'MISSING'}, User: ${user ? 'PRESENT' : 'MISSING'}`);
+      
       if (accessToken && !user) {
         try {
+          console.log('[Auth] Attempting to restore user session...');
           const res = await api.get('/api/me/')
           const userData = res.data.success ? res.data.data : res.data
           setUser(userData)
           localStorage.setItem('user', JSON.stringify(userData))
+          console.log('[Auth] Session restored successfully.');
         } catch (err) {
           console.error('[Auth] Failed to restore user session:', err)
           localStorage.removeItem('access')
@@ -76,7 +80,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           setUser(null)
         }
       }
+      
       setIsInitializing(false)
+      console.log('[Auth] Initialization complete.');
     }
     init()
   }, [accessToken, user])

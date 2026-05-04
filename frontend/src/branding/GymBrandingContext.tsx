@@ -38,28 +38,24 @@ const GymBrandingContext = createContext<GymBrandingContextValue | null>(null)
 function getSubdomain() {
   const hostname = window.location.hostname;
   
-  // IP addresses (like 127.0.0.1) and known main domains should always be treated as the main domain.
+  // 1. Check for IP addresses or localhost
   const isIP = /^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$/.test(hostname);
-  const mainDomains = [
-    'localhost', 
-    'for-you-nine-kohl.vercel.app', 
-    'for-you-nu-nine.vercel.app', 
-    'for-you-three.vercel.app',
-    'foryougym.com', 
-    'www.foryougym.com'
-  ];
-  
-  if (isIP || mainDomains.includes(hostname)) return null;
+  if (isIP || hostname === 'localhost') return null;
+
+  // 2. Check for Vercel preview/production domains
+  if (hostname.endsWith('.vercel.app')) return null;
+
+  // 3. Check for main production domain
+  const mainDomains = ['foryougym.com', 'www.foryougym.com'];
+  if (mainDomains.includes(hostname)) return null;
 
   const parts = hostname.split('.');
   
-  // Local development with subdomains (e.g. gym1.localhost)
-  if (parts.length === 2 && (parts[1] === 'localhost' || parts[1] === 'foryou')) return parts[0];
+  // 4. Local development with subdomains (e.g. gym1.localhost)
+  if (parts.length === 2 && parts[1] === 'localhost') return parts[0];
   
-  // Production with subdomains (e.g. gym1.foryougym.com)
+  // 5. Production with subdomains (e.g. gym1.foryougym.com)
   if (parts.length >= 3) {
-    // If it's a vercel branch deploy or similar, it might have many parts.
-    // We only care about tenant subdomains on our primary production domain.
     const baseDomain = parts.slice(-2).join('.');
     if (baseDomain === 'foryougym.com') {
       return parts[0];
@@ -74,7 +70,12 @@ export function GymBrandingProvider({ children }: { children: React.ReactNode })
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   
-  const subdomain = useMemo(() => getSubdomain(), [])
+  const subdomain = useMemo(() => {
+    const sd = getSubdomain();
+    console.log(`[Branding] Detected Subdomain: ${sd || 'NONE (Main Domain)'}`);
+    return sd;
+  }, [])
+
   const isMainDomain = !subdomain
 
   useEffect(() => {
@@ -83,16 +84,23 @@ export function GymBrandingProvider({ children }: { children: React.ReactNode })
   }, [data.primary_color])
 
   async function refresh() {
+    if (!subdomain) {
+      console.log('[Branding] No subdomain detected. Skipping configuration fetch.');
+      setIsLoading(false);
+      return;
+    }
+
     setIsLoading(true)
     setError(null)
     try {
+      console.log(`[Branding] Fetching configuration for: ${subdomain}`);
       const res = await api.get('/api/public/tenant-config/')
       const payload = res.data as GymBrandingBranding
       setData(payload)
       document.title = payload.is_tenant ? `${payload.gym_name} | Powered by 777c8` : '777c8 ELITE Gym SaaS'
     } catch (err) {
       const msg = getApiErrorMessage(err)
-      console.error(`[Branding] Configuration fetch failed: ${msg}. Falling back to default identity.`)
+      console.error(`[Branding] Configuration fetch failed: ${msg}. Falling back to default.`);
       setError(msg)
       setData(DEFAULT_BRANDING)
     } finally {
