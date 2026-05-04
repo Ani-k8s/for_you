@@ -46,7 +46,7 @@ export default function App() {
     return (
       <div className="h-screen w-full bg-[#010102] flex flex-col items-center justify-center gap-4">
         <div className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500">
-          Loading application...
+          App is loading...
         </div>
       </div>
     )
