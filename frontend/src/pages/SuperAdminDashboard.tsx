@@ -34,9 +34,10 @@ type SuperAdminDashboardData = {
 }
 
 export default function SuperAdminDashboard() {
-  useAuth()
+  const { user } = useAuth()
   const [data, setData] = useState<SuperAdminDashboardData | null>(null)
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
   const [showManualEditor, setShowManualEditor] = useState(false)
   const [editingRole, setEditingRole] = useState<string | null>(null)
   const [manualTitle, setManualTitle] = useState('')
@@ -50,8 +51,11 @@ export default function SuperAdminDashboard() {
   const fetchDashboardData = async () => {
     try {
       setLoading(true)
+      setError(null)
       const res = await api.get('/api/dashboard/')
       setData(res.data as SuperAdminDashboardData)
+    } catch (err) {
+      setError(getApiErrorMessage(err))
     } finally {
       setLoading(false)
     }
@@ -178,7 +182,7 @@ export default function SuperAdminDashboard() {
     }
   }
 
-  const filteredGyms = data?.gym_wise_analytics.filter(gym => 
+  const filteredGyms = data?.gym_wise_analytics?.filter(gym => 
     gym.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     gym.subdomain.toLowerCase().includes(searchTerm.toLowerCase()) ||
     gym.owner_email.toLowerCase().includes(searchTerm.toLowerCase())
@@ -192,6 +196,21 @@ export default function SuperAdminDashboard() {
       </div>
     )
   }
+
+  if (error) {
+    return (
+      <div className="p-8 sm:p-20 text-center animate-fadeInUp">
+        <div className="bg-red-500/10 border border-red-500/20 p-12 rounded-[3rem] inline-block max-w-xl">
+           <AlertCircle className="h-12 w-12 text-red-500 mx-auto mb-6" />
+           <p className="text-[11px] font-black text-red-500 uppercase tracking-[0.4em] mb-4 italic">Security Overload</p>
+           <p className="text-xl font-black text-white uppercase italic tracking-tighter break-words mb-8">{error}</p>
+           <Button onClick={() => fetchDashboardData()} variant="primary" className="min-h-[56px] px-10">Retry Authentication</Button>
+        </div>
+      </div>
+    )
+  }
+
+  if (!data) return null
 
   return (
     <div className="space-y-12 animate-fadeInUp pb-32 p-4 sm:p-8 max-w-[1600px] mx-auto">
@@ -214,7 +233,9 @@ export default function SuperAdminDashboard() {
                     <span className="text-[9px] font-bold uppercase tracking-widest text-slate-500 break-words">All systems online</span>
                  </div>
                  <div className="h-3 w-px bg-white/10 hidden sm:block" />
-                 <span className="text-[9px] font-bold uppercase tracking-widest text-brand-orange break-words">Master Node</span>
+                 <span className="text-[9px] font-bold uppercase tracking-widest text-brand-orange break-words italic">
+                   Operator: {user?.email?.split('@')[0] || 'System Master'}
+                 </span>
               </div>
            </div>
         </div>

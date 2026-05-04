@@ -138,16 +138,24 @@ export default function OwnerDashboard() {
 
   if (error) {
     return (
-      <div className="p-8 sm:p-20 text-center">
+      <div className="p-8 sm:p-20 text-center animate-fadeInUp">
         <div className="bg-red-500/10 border border-red-500/20 p-12 rounded-[3rem] inline-block max-w-xl">
-           <p className="text-sm font-black text-red-500 uppercase tracking-widest mb-6 break-words">{error}</p>
+           <AlertCircle className="h-12 w-12 text-red-500 mx-auto mb-6" />
+           <p className="text-[11px] font-black text-red-500 uppercase tracking-[0.4em] mb-4 italic">Operational Error</p>
+           <p className="text-xl font-black text-white uppercase italic tracking-tighter break-words mb-8">{error}</p>
            <Button onClick={() => window.location.reload()} variant="primary" className="min-h-[56px] px-10">Reconnect to Dashboard</Button>
         </div>
       </div>
     )
   }
 
-  if (!data) return null
+  if (!data) {
+    return (
+      <div className="p-8 sm:p-20 text-center animate-fadeInUp opacity-50">
+         <p className="text-[10px] font-black uppercase tracking-[0.5em] text-slate-700">Waiting for system data...</p>
+      </div>
+    )
+  }
 
   return (
     <div className="animate-fadeInUp space-y-12 pb-32 p-4 sm:p-8 max-w-[1600px] mx-auto">

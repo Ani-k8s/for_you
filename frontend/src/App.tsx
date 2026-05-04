@@ -1,6 +1,7 @@
 import React from 'react'
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import RequireAuth from './components/RequireAuth'
+import ErrorBoundary from './components/ErrorBoundary'
 import AppShell from './components/AppShell'
 import LoginPage from './pages/LoginPage'
 import LandingPage from './pages/LandingPage'
@@ -43,7 +44,8 @@ export default function App() {
   return (
     <BrowserRouter>
       <Toaster position="top-right" richColors closeButton theme="dark" />
-      <Routes>
+      <ErrorBoundary>
+        <Routes>
         {isMainDomain ? (
           /* GLOBAL MARKETING APP (Main Domain) */
           <>
@@ -230,6 +232,7 @@ export default function App() {
           </>
         )}
       </Routes>
+      </ErrorBoundary>
     </BrowserRouter>
   )
 }

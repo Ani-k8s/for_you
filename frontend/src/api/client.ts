@@ -25,6 +25,23 @@ api.interceptors.request.use((config) => {
   return config
 })
 
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      console.warn('[Auth] Token expired or invalid. Clearing session.')
+      localStorage.removeItem('access')
+      localStorage.removeItem('refresh')
+      localStorage.removeItem('user')
+      // Only reload/redirect if we are not on public pages
+      if (!window.location.pathname.match(/^\/(login|register)?$/) && window.location.pathname !== '/') {
+        window.location.href = '/'
+      }
+    }
+    return Promise.reject(error)
+  }
+)
+
 export function setAccessToken(token: string | null) {
   if (token) {
     localStorage.setItem('access', token)
