@@ -40,7 +40,14 @@ function getSubdomain() {
   
   // IP addresses (like 127.0.0.1) and known main domains should always be treated as the main domain.
   const isIP = /^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$/.test(hostname);
-  const mainDomains = ['localhost', 'for-you-nu-nine.vercel.app', 'foryougym.com', 'www.foryougym.com'];
+  const mainDomains = [
+    'localhost', 
+    'for-you-nine-kohl.vercel.app', 
+    'for-you-nu-nine.vercel.app', 
+    'for-you-three.vercel.app',
+    'foryougym.com', 
+    'www.foryougym.com'
+  ];
   
   if (isIP || mainDomains.includes(hostname)) return null;
 
