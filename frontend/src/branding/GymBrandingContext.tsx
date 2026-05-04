@@ -38,13 +38,27 @@ const GymBrandingContext = createContext<GymBrandingContextValue | null>(null)
 function getSubdomain() {
   const hostname = window.location.hostname;
   
-  // IP addresses (like 127.0.0.1) should always be treated as the main domain.
+  // IP addresses (like 127.0.0.1) and known main domains should always be treated as the main domain.
   const isIP = /^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$/.test(hostname);
-  if (isIP || hostname === 'localhost') return null;
+  const mainDomains = ['localhost', 'for-you-nu-nine.vercel.app', 'foryougym.com', 'www.foryougym.com'];
+  
+  if (isIP || mainDomains.includes(hostname)) return null;
 
   const parts = hostname.split('.');
-  if (parts.length >= 3) return parts[0];
+  
+  // Local development with subdomains (e.g. gym1.localhost)
   if (parts.length === 2 && (parts[1] === 'localhost' || parts[1] === 'foryou')) return parts[0];
+  
+  // Production with subdomains (e.g. gym1.foryougym.com)
+  if (parts.length >= 3) {
+    // If it's a vercel branch deploy or similar, it might have many parts.
+    // We only care about tenant subdomains on our primary production domain.
+    const baseDomain = parts.slice(-2).join('.');
+    if (baseDomain === 'foryougym.com') {
+      return parts[0];
+    }
+  }
+  
   return null;
 }
 
