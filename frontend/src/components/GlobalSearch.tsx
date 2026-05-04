@@ -98,7 +98,7 @@ export default function GlobalSearch() {
                       </div>
                       <div>
                         <p className="text-sm font-bold text-slate-900 dark:text-white group-hover:text-brand-500 transition-colors">{gym.name}</p>
-                        <p className="text-[10px] text-slate-500 font-medium">{gym.subdomain}.localhost</p>
+                        <p className="text-[10px] text-slate-500 font-medium">{gym.subdomain}.foryougym.com</p>
                       </div>
                     </button>
                   ))}

@@ -1,4 +1,4 @@
-export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://for-you-1-bqij.onrender.com'
+export const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://for-you-1-bqij.onrender.com'
 
 export const ROLES = {
   SUPER_ADMIN: 'super_admin',
