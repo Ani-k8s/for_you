@@ -63,26 +63,26 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const init = async () => {
       console.log(`[Auth] Initializing. Token: ${accessToken ? 'PRESENT' : 'MISSING'}, User: ${user ? 'PRESENT' : 'MISSING'}`);
       
-      if (accessToken && !user) {
-        try {
+      try {
+        if (accessToken && !user) {
           console.log('[Auth] Attempting to restore user session...');
           const res = await api.get('/api/me/')
           const userData = res.data.success ? res.data.data : res.data
           setUser(userData)
           localStorage.setItem('user', JSON.stringify(userData))
           console.log('[Auth] Session restored successfully.');
-        } catch (err) {
-          console.error('[Auth] Failed to restore user session:', err)
-          localStorage.removeItem('access')
-          localStorage.removeItem('refresh')
-          localStorage.removeItem('user')
-          setAccessToken(null)
-          setUser(null)
         }
+      } catch (err) {
+        console.error('[Auth] Failed to restore user session:', err)
+        localStorage.removeItem('access')
+        localStorage.removeItem('refresh')
+        localStorage.removeItem('user')
+        setAccessToken(null)
+        setUser(null)
+      } finally {
+        setIsInitializing(false)
+        console.log('[Auth] Initialization complete.');
       }
-      
-      setIsInitializing(false)
-      console.log('[Auth] Initialization complete.');
     }
     init()
   }, [accessToken, user])
@@ -165,9 +165,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     [accessToken, user, isAuthenticated, isInitializing],
   )
 
-  if (isInitializing && accessToken && !user) {
-    return null // Or a loader
-  }
+  // We removed the return null blocker to ensure the App always renders.
+  // The loading state is handled by the App component itself.
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
 }

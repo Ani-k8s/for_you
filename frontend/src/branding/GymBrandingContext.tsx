@@ -38,15 +38,15 @@ const GymBrandingContext = createContext<GymBrandingContextValue | null>(null)
 function getSubdomain() {
   const hostname = window.location.hostname;
   
-  // 1. Check for IP addresses or localhost
+  // 1. Any hostname ending with .vercel.app MUST return null
+  if (hostname.endsWith('.vercel.app')) return null;
+
+  // 2. Check for IP addresses or localhost
   const isIP = /^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$/.test(hostname);
   if (isIP || hostname === 'localhost') return null;
 
-  // 2. Check for Vercel preview/production domains
-  if (hostname.endsWith('.vercel.app')) return null;
-
   // 3. Check for main production domain
-  const mainDomains = ['foryougym.com', 'www.foryougym.com'];
+  const mainDomains = ['foryougym.com', 'www.foryougym.com', 'for-you-nine-kohl.vercel.app', 'for-you-nu-nine.vercel.app'];
   if (mainDomains.includes(hostname)) return null;
 
   const parts = hostname.split('.');

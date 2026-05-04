@@ -35,15 +35,18 @@ export default function App() {
   const { isMainDomain, isLoading: isBrandingLoading, subdomain } = useGymBranding()
   const { isLoading: isAuthLoading } = useAuth()
 
+  // TEMPORARY DEBUG LOGS
+  console.log("Subdomain:", subdomain);
+  console.log("Branding loading:", isBrandingLoading);
+  console.log("Auth initializing:", isAuthLoading);
+
   const isLoading = isBrandingLoading || isAuthLoading
 
   if (isLoading) {
-    console.log(`[App] Still loading. Branding: ${isBrandingLoading}, Auth: ${isAuthLoading}`);
     return (
       <div className="h-screen w-full bg-[#010102] flex flex-col items-center justify-center gap-4">
-        <Loader2 className="h-10 w-10 text-brand-red animate-spin" />
-        <div className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500 animate-pulse">
-          Initializing {subdomain ? `Tenant [${subdomain}]` : 'Marketing System'}...
+        <div className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-500">
+          Loading application...
         </div>
       </div>
     )
