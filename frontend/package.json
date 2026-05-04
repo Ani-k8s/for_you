@@ -23,6 +23,9 @@
     "react-router-dom": "7.13.2",
     "sonner": "^2.0.7",
     "tailwind-merge": "3.5.0",
+    "@emotion/react": "^11.11.0",
+    "@emotion/styled": "^11.11.0",
+    "@emotion/is-prop-valid": "^1.2.1",
     "playwright": "1.49.0",
     "@playwright/test": "1.49.0"
   },

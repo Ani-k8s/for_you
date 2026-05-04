@@ -19,4 +19,7 @@ export default defineConfig({
       usePolling: true,
     },
   },
+  optimizeDeps: {
+    include: ['@emotion/is-prop-valid'],
+  },
 })
