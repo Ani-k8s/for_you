@@ -31,7 +31,13 @@ export default function LoginPage() {
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
-  // Removed auto-redirect useEffect to prevent loops
+  useEffect(() => {
+    if (isAuthenticated && user) {
+      const dashboardRoute = getDashboardRoute(user.role)
+      console.log(`[Auth] User already authenticated. Navigating to: ${dashboardRoute}`)
+      navigate(dashboardRoute, { replace: true })
+    }
+  }, [isAuthenticated, user, navigate])
 
   useEffect(() => {
     if (error) {
@@ -53,8 +59,8 @@ export default function LoginPage() {
       toast.success('Login successful!')
       
       const dashboardRoute = getDashboardRoute(loggedInUser.role)
-      console.log(`[Auth] Redirecting ${loggedInUser.role} to: ${dashboardRoute}`)
-      window.location.href = dashboardRoute
+      console.log(`[Auth] Login successful. Navigating to: ${dashboardRoute}`)
+      navigate(dashboardRoute, { replace: true })
     } catch (err: any) {
       const msg = getApiErrorMessage(err)
       setError(msg)

@@ -1,10 +1,12 @@
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { api, getApiErrorMessage } from '../api/client'
 import Card from '../components/ui/Card'
 import Button from '../components/ui/Button'
 import { Building, Mail, Send, CheckCircle, ArrowRight } from 'lucide-react'
 
 export default function RegistrationLinkPage() {
+  const navigate = useNavigate()
   const [formData, setFormData] = useState({
     name: '',
     subdomain: '',
@@ -39,7 +41,7 @@ export default function RegistrationLinkPage() {
             Thank you for applying to join the ForYou Gym network. Our team will review your request and contact you at <span className="text-emerald-400">{formData.owner_email}</span> shortly.
           </p>
           <div className="pt-4">
-            <Button variant="outline" className="w-full h-12" onClick={() => window.location.href = '/'}>
+            <Button variant="outline" className="w-full h-12" onClick={() => navigate('/')}>
               Back to Home
             </Button>
           </div>

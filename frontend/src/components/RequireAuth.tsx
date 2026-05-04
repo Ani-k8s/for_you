@@ -4,23 +4,18 @@ import { useAuth } from '../auth/AuthContext'
 import { Loader2 } from 'lucide-react'
 
 export default function RequireAuth({ children }: { children: React.ReactNode }) {
-  const { accessToken, user, isAuthenticated } = useAuth()
+  const { isLoading, isAuthenticated } = useAuth()
   
-  // If no token at all, definitely not logged in
-  if (!accessToken) {
-    return <Navigate to="/" replace />
-  }
-
-  // If we have a token but user profile isn't loaded yet, show a loader 
-  if (!user) {
+  // 1. Show loader while the auth state is still being initialized (fetching profile, etc.)
+  if (isLoading) {
     return (
       <div className="h-screen w-full bg-[#010102] flex items-center justify-center">
         <Loader2 className="h-8 w-8 text-brand-red animate-spin" />
       </div>
     )
   }
-
-  // Final check
+  
+  // 2. If not authenticated after loading, redirect to landing
   if (!isAuthenticated) {
     return <Navigate to="/" replace />
   }

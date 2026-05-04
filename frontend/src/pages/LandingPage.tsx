@@ -38,6 +38,15 @@ export default function LandingPage() {
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
+  
+  // Auto-redirect authenticated users
+  useEffect(() => {
+    if (isAuthenticated && user) {
+      const dashboardRoute = getDashboardRoute(user.role)
+      console.log(`[Auth] Authenticated user found on landing page. Redirecting to: ${dashboardRoute}`)
+      navigate(dashboardRoute, { replace: true })
+    }
+  }, [isAuthenticated, user, navigate])
 
   return (
     <div className="min-h-screen bg-[#020203] text-white selection:bg-brand-red/30 selection:text-white overflow-x-hidden font-sans">

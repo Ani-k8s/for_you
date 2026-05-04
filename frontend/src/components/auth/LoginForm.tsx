@@ -37,8 +37,8 @@ export default function LoginForm() {
       toast.success('Sign in successful!')
       
       const dashboardRoute = getDashboardRoute(loggedInUser.role)
-      console.log(`[Auth] Redirecting ${loggedInUser.role} to: ${dashboardRoute}`)
-      window.location.href = dashboardRoute
+      console.log(`[Auth] Form login successful. Navigating to: ${dashboardRoute}`)
+      navigate(dashboardRoute, { replace: true })
     } catch (err: any) {
       const msg = getApiErrorMessage(err)
       setError(msg)

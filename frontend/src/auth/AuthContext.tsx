@@ -19,6 +19,7 @@ type AuthContextValue = {
   loginWithGoogle: (token: string) => Promise<User>
   logout: () => void
   isAuthenticated: boolean
+  isLoading: boolean
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null)
@@ -103,6 +104,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
         // 2. Fetch user profile (Robust flow)
         try {
+          setIsInitializing(true)
           const profileRes = await api.get('/api/me/')
           const userData = profileRes.data.success ? profileRes.data.data : profileRes.data
           
@@ -115,6 +117,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           const fallbackUser = payload.user || { email, role: 'member' }
           setUser(fallbackUser)
           return fallbackUser
+        } finally {
+          setIsInitializing(false)
         }
       },
       loginWithGoogle: async (token: string): Promise<User> => {
@@ -150,8 +154,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         setUser(null)
         delete api.defaults.headers.common.Authorization
       },
+      isLoading: isInitializing,
     }),
-    [accessToken, user, isAuthenticated],
+    [accessToken, user, isAuthenticated, isInitializing],
   )
 
   if (isInitializing && accessToken && !user) {

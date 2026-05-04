@@ -29,7 +29,7 @@ export default function Navbar({
         <div 
           className="flex items-center gap-3 group cursor-pointer transition-all active:scale-95" 
           onClick={() => {
-            window.location.href = '/'
+            navigate('/')
           }}
         >
             <div className="flex flex-col">
