@@ -70,10 +70,10 @@ services:
   frontend:
     build:
       context: ./frontend
-      dockerfile: ../docker/frontend.Dockerfile
+      dockerfile: Dockerfile
     restart: unless-stopped
     ports:
-      - "9090:80"
+      - "80:80"
     depends_on:
       - backend
     networks:
