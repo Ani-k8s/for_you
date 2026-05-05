@@ -23,7 +23,8 @@ jobs:
   backend-test:
     name: Backend — Tests + Migrations + E2E
     runs-on: ubuntu-latest
-
+    env:
+    DJANGO_SETTINGS_MODULE: project.settings.base
     services:
       postgres:
         image: postgres:15-alpine
