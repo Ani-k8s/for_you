@@ -72,7 +72,11 @@ class NotificationDispatcher:
         password: str,
     ) -> None:
         """Send welcome credentials to a new member via enabled channels."""
-        config = self._get_config(gym)
+        try:
+            config = self._get_config(gym)
+        except Exception:
+            config = None
+
         if config is None:
             return
 
