@@ -72,7 +72,11 @@ class NotificationDispatcher:
         password: str,
     ) -> None:
         """Send welcome credentials to a new member via enabled channels."""
-        config = self._get_config(gym)
+        try:
+            config = self._get_config(gym)
+        except Exception:
+            config = None
+
 
         if config is None:
             return
@@ -125,7 +129,11 @@ class NotificationDispatcher:
         password: str,
     ) -> None:
         """Send welcome credentials to a new gym owner."""
-        config = self._get_config(gym)
+        try:
+            config = self._get_config(gym)
+        except Exception:
+            config = None
+
         if config is None:
             # Always send owner welcome even without config (new gym)
             # Use platform defaults
@@ -178,7 +186,11 @@ class NotificationDispatcher:
         days_left: int,
     ) -> None:
         """Send membership expiry reminder via enabled channels."""
-        config = self._get_config(gym)
+        try:
+            config = self._get_config(gym)
+        except Exception:
+            config = None
+
         if config is None:
             return
 
@@ -235,7 +247,11 @@ class NotificationDispatcher:
         gym: "Gym",
     ) -> None:
         """Send check-in confirmation via WhatsApp (if enabled)."""
-        config = self._get_config(gym)
+        try:
+            config = self._get_config(gym)
+        except Exception:
+            config = None
+
         if config is None:
             return
 
@@ -275,7 +291,11 @@ class NotificationDispatcher:
         
         Rate safety: processes in batches of _MAX_BROADCAST_BATCH_SIZE.
         """
-        config = self._get_config(gym)
+        try:
+            config = self._get_config(gym)
+        except Exception:
+            config = None
+
         if config is None:
             return {"sent": 0, "failed": 0, "skipped": len(members)}
 
