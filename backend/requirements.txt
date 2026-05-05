@@ -65,3 +65,7 @@ gunicorn==22.0.0                # WSGI server for production (Procfile)
 #
 # No business logic changes needed — the factory/dispatcher pattern supports
 # both synchronous and Celery task execution transparently.
+
+# ── Testing ──────────────────────────────────────────────────────────────────
+pytest==8.2.2
+pytest-django==4.8.0
