@@ -41,7 +41,8 @@ services:
   backend:
     build:
       context: ./backend
-      dockerfile: ../docker/backend.Dockerfile
+      dockerfile: Dockerfile
+
     restart: unless-stopped
     env_file:
       - .env

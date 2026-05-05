@@ -251,7 +251,11 @@ jobs:
           GUNICORN_TIMEOUT=60
           EOF
 
+      - name: 🔧 Prepare environment
+        run: cp .env.example .env
+
       - name: 🐋 Start services
+
         run: docker compose up -d --build
 
       - name: ⏳ Wait for backend health
